@@ -2,6 +2,12 @@
   margin: 0;
   padding: 0;
 }
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  color: white;
+}
 
 nav {
   background-color: rgb(11, 129, 110);
@@ -13,6 +19,37 @@ nav ul {
 .navbar-toggler {
   background-color: white !important;
 }
+
 .navbar-toggler:focus {
   box-shadow: 0px 0px 20px 0.1rem !important;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: #020d14;
+  overflow: hidden;
+}
+
+/* gradient glow */
+.bg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at right, rgba(0, 255, 255, 0.2), transparent 40%),
+    radial-gradient(circle at left, rgba(0, 255, 255, 0.1), transparent 30%),
+    #020d14;
+}
+
+/* wave effect */
+.bg::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: 30%;
+  left: -50%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.2), transparent 60%);
+  filter: blur(60px);
 }
