@@ -1,24 +1,27 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .navbar {
   padding-top: 20px !important;
   background-color: transparent;
+  align-content: center;
+  justify-items: center ;
 }
 a {
-  padding-left: 7px !important;
+  padding-left: 10px !important;
   color: #ffffff !important;
 }
 @media (min-width: 992px) {
   a {
-    padding-left: 40px !important;
+    padding-left: 30px !important;
   }
 }
-a:focus {
+/* a:focus {
   padding-left: 10px !important;
-}
+} */
 .nav-link {
   transition: all 0.35s ease !important;
 }
@@ -28,7 +31,7 @@ a:focus {
 }
 
 nav ul {
-  padding-top: 13px;
+  padding-top: auto;
 }
 .navbar-toggler {
   background-color: white !important;
@@ -45,7 +48,6 @@ body {
   overflow: hidden;
 }
 
-/* gradient glow */
 .bg {
   position: relative;
   width: 100%;
@@ -56,7 +58,6 @@ body {
     #020d14;
 }
 
-/* wave effect */
 .bg::after {
   content: "";
   position: absolute;
@@ -66,4 +67,8 @@ body {
   left: -50%;
   background: radial-gradient(circle, rgba(0, 255, 255, 0.2), transparent 60%);
   filter: blur(60px);
+}
+
+.par{
+  
 }
