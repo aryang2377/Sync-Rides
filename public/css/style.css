@@ -74,5 +74,6 @@ body {
   filter: blur(60px);
 }
 
-.par {
+.logo {
+  font-family: fantasy;
 }
