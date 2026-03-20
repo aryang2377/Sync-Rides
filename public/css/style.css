@@ -9,7 +9,7 @@
   background-color: rgba(255, 255, 255, 0.1); /* transparency */
   backdrop-filter: blur(12px);
   /* -webkit-backdrop-filter: blur(12px); Safari support */
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.106);
   padding: 20px;
   color: white;
   align-content: center;
