@@ -86,6 +86,7 @@ nav ul {
 }
 
 .profile {
+.profile {
   padding-bottom: 0 !important;
 }
 
@@ -102,6 +103,7 @@ nav ul {
   font-size: 15px;
 }
 
+.log:hover {
 .log:hover {
   color: rgb(159, 170, 170) !important;
   text-decoration: underline;
@@ -142,6 +144,7 @@ nav ul {
 }
 
 .content {
+.content {
   margin-top: 95px;
   text-align: center;
   color: white;
@@ -149,7 +152,7 @@ nav ul {
 
 .head {
   font-size: 45px;
-  font-family: 'Bebas Neue', sans-serif;
+  font-family: "Bebas Neue", sans-serif;
 }
 
 .cap {
@@ -158,6 +161,7 @@ nav ul {
   color: rgb(85, 162, 105);
 }
 
+.text {
 .text {
   padding: 0 !important;
   padding-left: 14px !important;
