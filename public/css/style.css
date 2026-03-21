@@ -37,7 +37,7 @@ body {
 
 .navbar {
   display: flex;
-  padding: 15px !important;
+  padding: 3px !important;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   /* -webkit-backdrop-filter: blur(12px); Safari support */
@@ -85,31 +85,25 @@ nav ul {
   box-shadow: 0px 0px 20px 0.1rem !important;
 }
 
-.auth {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
+.profile{
+  padding-bottom: 0 !important;
 }
 
-.auth .material-icons {
-  font-size: 32px !important;
+.material-icons {
+  font-size: 34px !important;
+  padding: auto;
+  line-height: 5px;
+}
+.log{
+  margin-bottom: 10px;
+  padding-left: 0 !important;
+  text-decoration: none;
+  font-size: 15px;
 }
 
-.log {
-  display: flex;
-  font-size: 13.5px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  text-decoration: underline;
+.log:hover{
+  color: aqua !important;
 }
-
-.log:hover {
-  color: rgb(203, 196, 196);
-}
-
 
 .footer {
   display: flex;
@@ -147,17 +141,18 @@ nav ul {
 
 
 
-.content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  flex-direction: column;
+.content{
+  margin-top: 95px;
   text-align: center;
+  color: white;
 }
 
 .head {
   font-size: 40px;
   font-family: 'Bebas Neue', sans-serif;
   ;
+}
+.text{
+  padding: 0 !important;
+  padding-left: 14px !important;
 }
