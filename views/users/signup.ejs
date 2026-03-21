@@ -1,0 +1,70 @@
+<% layout('/layouts/boilerplate.ejs') %>
+
+<div class="row mt-3">
+  <div class="col-10 col-sm-9 col-lg-6 offset-lg-3 offset-sm-2">
+    <h2>
+      &nbsp;&nbsp;Signup on
+      <span
+        style="
+          color: #3ea171;
+          font-family:
+            &quot;Trebuchet MS&quot;, &quot;Lucida Sans Unicode&quot;,
+            &quot;Lucida Grande&quot;, &quot;Lucida Sans&quot;, Arial,
+            sans-serif;
+        "
+        >Meal Delight</span
+      >
+    </h2>
+    <form
+      action="/signup"
+      method="POST"
+      class="needs-validation mt-3 ms-3"
+      novalidate
+    >
+      <div class="mb-3 mt-4 form-floating">
+        <input
+          name="username"
+          placeholder="Enter Username"
+          type="text"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Username is required</div>
+        <label for="username" class="form-label mb-0">Username</label>
+      </div>
+      <div class="mb-3 form-floating">
+        <input
+          name="email"
+          placeholder="Enter your Email"
+          type="email"
+          required
+          class="form-control"
+        /><label for="email" class="form-label mb-0">Email</label>
+        <div class="invalid-feedback">Email address is required</div>
+      </div>
+
+      <div class="form-floating">
+        <input
+          name="password"
+          placeholder="Enter your Password"
+          type="password"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Password is required</div>
+        <label for="password" class="form-label mb-0">Password</label>
+      </div>
+      <br />
+      <button class="btn btn-success" style="width: 7rem; border: none">
+        Signup
+      </button>
+    </form>
+    <hr />
+    <div class="ms-3 f-info-link">
+      Already have an account?
+      <a href="/login" style="font-weight: 600; padding-left: 2px !important"
+        >Login</a
+      >
+    </div>
+  </div>
+</div>

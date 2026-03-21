@@ -14,7 +14,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.render("listings/dashboard");
 });
-
+app.get("/login", (req, res) => {
+  res.render("users/login");
+});
+app.get("/signup", (req, res) => {
+  res.render("users/signup");
+});
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000");
 });
