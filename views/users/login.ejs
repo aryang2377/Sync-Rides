@@ -21,7 +21,18 @@
       class="needs-validation mt-3 ms-3"
       novalidate
     >
-      <div class="mb-3 mt-4 form-floating">
+      <div class="mb-3 mt-5 form-floating">
+        <input
+          name="registration"
+          placeholder="Enter your Registration Number"
+          type="number"
+          required
+          class="form-control"
+        /><label for="registration" class="form-label mb-0"
+          >Registration Number</label
+        >
+      </div>
+      <div class="mb-3 form-floating">
         <input
           name="username"
           placeholder="Enter Username"
@@ -43,7 +54,7 @@
         <label for="password" class="form-label mb-0">Password</label>
       </div>
       <br />
-      <button class="btn btn-success" style="width: 7rem; border: none">
+      <button class="btn btn-success" style="width: 100%; border: none">
         Login
       </button>
     </form>

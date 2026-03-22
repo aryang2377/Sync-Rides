@@ -21,7 +21,19 @@
       class="needs-validation mt-3 ms-3"
       novalidate
     >
-      <div class="mb-3 mt-4 form-floating">
+      <div class="mb-3 mt-5 form-floating">
+        <input
+          name="registration"
+          placeholder="Enter your Registration Number"
+          type="number"
+          required
+          class="form-control"
+        /><label for="registration" class="form-label mb-0"
+          >Registration Number</label
+        >
+        <div class="invalid-feedback">Registration Number is required</div>
+      </div>
+      <div class="mb-3 form-floating">
         <input
           name="username"
           placeholder="Enter Username"
@@ -54,8 +66,19 @@
         <div class="invalid-feedback">Password is required</div>
         <label for="password" class="form-label mb-0">Password</label>
       </div>
+      <select
+        class="form-select mt-3"
+        aria-label="Default select example"
+        required
+        style="height: 47px"
+      >
+        <option selected hidden>Select Mess</option>
+        <option value="BlueDove">BlueDove</option>
+        <option value="BlueSpring">BlueSpring</option>
+      </select>
+
       <br />
-      <button class="btn btn-success" style="width: 7rem; border: none">
+      <button class="btn btn-success" style="width: 100%; border: none">
         Signup
       </button>
     </form>
