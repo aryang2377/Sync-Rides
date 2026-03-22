@@ -82,3 +82,6 @@
   width: 75%;
   height: auto;
 }
+.icon {
+  padding-left: 10px !important;
+}
