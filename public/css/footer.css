@@ -114,12 +114,8 @@ i {
 i:hover {
   color: darkgrey;
 }
-.meal{
-  background: linear-gradient(
-    to right,
-    #c2ff48,
-    #00ffcc
-  );
+.meal {
+  background: linear-gradient(to right, #c2ff48, #00ffcc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
