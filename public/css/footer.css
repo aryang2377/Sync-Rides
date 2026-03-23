@@ -114,3 +114,9 @@
 .icon {
   padding-left: 10px !important;
 }
+i {
+  transition: all ease-in 0.25s;
+}
+i:hover {
+  color: darkgrey;
+}
