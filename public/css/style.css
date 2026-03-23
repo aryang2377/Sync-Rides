@@ -109,7 +109,6 @@ nav ul {
 }
 
 @media (max-width: 992px) {
-
   .profile-log,
   .profile {
     display: none !important;
@@ -203,7 +202,7 @@ nav ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* gap:40px; */
+  gap: 28px;
   padding: 80px 70px;
 }
 
@@ -341,7 +340,9 @@ nav ul {
   font-size: 38px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #b7ff65;
+  background: linear-gradient(165deg, #a5f14f, #5a9813);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .features_right {
@@ -361,14 +362,15 @@ nav ul {
 }
 
 @media (max-width: 992px) {
-
   .front,
   .back {
     flex-direction: column;
     text-align: center;
     gap: 40px;
   }
-
+  .head2 {
+    font-size: 37px;
+  }
 }
 
 img {
@@ -377,19 +379,17 @@ img {
 }
 
 @media (max-width: 768px) {
-
   .front {
+    gap: 40px;
     padding: 40px 20px;
   }
 
   .back {
     padding: 40px 20px;
   }
-
 }
 
 @media (max-width: 576px) {
-
   .buttons {
     flex-direction: column;
     width: 100%;
@@ -397,16 +397,17 @@ img {
 
   .btn1,
   .btn2 {
-    width: 100%;
+    width: 80%;
     text-align: center;
+  }
+  .head2 {
+    font-size: 30px;
   }
 
   @media (max-width: 768px) {
-
     .chart-card {
       padding: 20px;
     }
-
   }
 }
 
@@ -415,11 +416,9 @@ img {
 }
 
 @media (max-width: 576px) {
-
   .chart-stats {
     flex-direction: column;
     gap: 15px;
     text-align: center;
   }
-
 }
