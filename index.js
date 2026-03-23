@@ -12,6 +12,9 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
+  res.render("listings/home");
+});
+app.get("/dashboard", (req, res) => {
   res.render("listings/dashboard");
 });
 app.get("/login", (req, res) => {
