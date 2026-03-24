@@ -273,6 +273,11 @@ nav ul {
   background: rgba(255, 255, 255, 0.08);
 }
 
+.btn1:active,
+.btn2:active {
+  transform: scale(0.97);
+}
+
 .rightside {
   width: 100%;
   max-width: 600px;
@@ -284,6 +289,11 @@ nav ul {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 40px;
+}
+.chart-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px) !important;
 }
 
 .chart-top {
