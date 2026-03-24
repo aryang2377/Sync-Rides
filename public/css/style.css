@@ -10,6 +10,22 @@ body {
   background: #020d14;
   overflow-x: hidden;
 }
+.active-link {
+  color: #a5f14f !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+
+/* .active-link::after {
+  content: "";
+  /* position: absolute; */
+  /* left: 10px;
+  bottom: -6px;
+  width: calc(100% - 10px);
+  height: 2px; */
+  /* background: #a5f14f; */
+  /* border-radius: 2px; */
+/* } */
 
 .bg {
   position: relative;

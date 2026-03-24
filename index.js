@@ -11,6 +11,11 @@ app.use(method("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  next();
+});
+
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
