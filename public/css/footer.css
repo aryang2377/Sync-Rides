@@ -114,7 +114,7 @@ i {
 i:hover {
   color: darkgrey;
 }
-.meal {
+.ride {
   background: linear-gradient(to right, #c2ff48, #00ffcc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

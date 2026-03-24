@@ -37,7 +37,7 @@ body {
 
 .navbar {
   display: flex;
-  padding: 3px !important;
+  padding: 5.5px !important;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(15px);
   /* -webkit-backdrop-filter: blur(12px); Safari support */
@@ -68,6 +68,9 @@ a {
   transition: all 0.35s ease !important;
 }
 
+.nav-link .active {
+  padding-top: 15px !important;
+}
 .nav-link:hover {
   font-size: 18px;
   font-weight: 600;
@@ -137,7 +140,7 @@ nav ul {
   width: 100%;
   /* max-width: 1000px; */
   margin: 0px;
-  padding: 12px 16px;
+  padding: 18px 16px;
   height: auto;
   min-height: 50px;
   /* background: rgba(1, 9, 20, 0.85); */
@@ -371,12 +374,16 @@ nav ul {
   .head2 {
     font-size: 37px;
   }
+  .btn1,
+  .btn2 {
+    padding-left: 17px !important;
+  }
 }
-
+/* 
 img {
   max-width: 100%;
   height: auto;
-}
+} */
 
 @media (max-width: 768px) {
   .front {
@@ -413,9 +420,52 @@ img {
 
 .right_sidetext {
   flex: 1;
+  max-width: 560px;
+}
+
+.back .graph,
+.back .right_sidetext {
+  flex: 1;
+  min-width: 0;
+}
+
+.cap2 {
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.features_right li {
+  min-width: 0;
+}
+
+@media (max-width: 992px) {
+  .cap2 {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px;
+  }
+  .features_right li {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 576px) {
+  .back {
+    padding: 30px 12px;
+  }
+  .cap2 {
+    padding: 15px;
+    font-size: 16px;
+    text-align: center;
+  }
+  .features_right {
+    padding-left: 0;
+  }
+  .features_right li {
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
   .chart-stats {
     flex-direction: column;
     gap: 15px;

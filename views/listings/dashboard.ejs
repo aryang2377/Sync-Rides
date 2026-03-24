@@ -1,1 +1,39 @@
 <% layout('/layouts/boilerplate.ejs') %>
+
+<div class="dashboard-container mt-4">
+  <h2>Sync Rides Dashboard</h2>
+  <p>Welcome back! View and manage your rides below.</p>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Upcoming Trips</h5>
+          <p class="card-text">3 scheduled rides this week</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Matched Riders</h5>
+          <p class="card-text">12 riders currently matched</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Earnings / Savings</h5>
+          <p class="card-text">$248 total shared fare this month</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h5>Quick Actions</h5>
+    <a class="btn btn-primary me-2" href="/dashboard">Offer a Ride</a>
+    <a class="btn btn-secondary" href="/dashboard">Find a Ride</a>
+  </div>
+</div>

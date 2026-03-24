@@ -3,7 +3,7 @@
 <div class="row mt-3">
   <div class="col-10 col-sm-9 col-lg-6">
     <h2>
-      &nbsp;&nbsp;Signup on
+      &nbsp;&nbsp;Signup for
       <span
         style="
           color: #3ea171;
@@ -12,7 +12,7 @@
             &quot;Lucida Grande&quot;, &quot;Lucida Sans&quot;, Arial,
             sans-serif;
         "
-        >Meal Delight</span
+        >Sync Rides</span
       >
     </h2>
     <form
@@ -23,26 +23,13 @@
     >
       <div class="mb-3 mt-5 form-floating">
         <input
-          name="registration"
-          placeholder="Enter your Registration Number"
-          type="number"
-          required
-          class="form-control"
-        /><label for="registration" class="form-label mb-0"
-          >Registration Number</label
-        >
-        <div class="invalid-feedback">Registration Number is required</div>
-      </div>
-      <div class="mb-3 form-floating">
-        <input
-          name="username"
-          placeholder="Enter Username"
+          name="fullname"
+          placeholder="Enter full name"
           type="text"
           required
           class="form-control"
-        />
-        <div class="invalid-feedback">Username is required</div>
-        <label for="username" class="form-label mb-0">Username</label>
+        /><label for="fullname" class="form-label mb-0">Full Name</label>
+        <div class="invalid-feedback">Full name is required</div>
       </div>
       <div class="mb-3 form-floating">
         <input
@@ -51,10 +38,21 @@
           type="email"
           required
           class="form-control"
-        /><label for="email" class="form-label mb-0">Email</label>
+        />
         <div class="invalid-feedback">Email address is required</div>
+        <label for="email" class="form-label mb-0">Email</label>
       </div>
-
+      <div class="mb-3 form-floating">
+        <input
+          name="phone"
+          placeholder="Enter phone number"
+          type="tel"
+          required
+          class="form-control"
+        />
+        <div class="invalid-feedback">Phone number is required</div>
+        <label for="phone" class="form-label mb-0">Phone</label>
+      </div>
       <div class="form-floating">
         <input
           name="password"
@@ -67,15 +65,34 @@
         <label for="password" class="form-label mb-0">Password</label>
       </div>
       <select
+        name="role"
         class="form-select mt-3"
-        aria-label="Default select example"
+        aria-label="Role select"
         required
         style="height: 47px"
       >
-        <option selected hidden>Select Mess</option>
-        <option value="BlueDove">BlueDove</option>
-        <option value="BlueSpring">BlueSpring</option>
+        <option selected hidden>Select role</option>
+        <option value="driver">Driver</option>
+        <option value="rider">Rider</option>
       </select>
+      <div class="mt-3">
+        <input
+          name="vehicle"
+          placeholder="Vehicle model (drivers only)"
+          type="text"
+          class="form-control"
+        />
+      </div>
+      <div class="mt-3">
+        <input
+          name="seats"
+          placeholder="Available seats (drivers only)"
+          type="number"
+          min="1"
+          max="8"
+          class="form-control"
+        />
+      </div>
 
       <br />
       <button class="btn btn-success" style="width: 100%; border: none">
