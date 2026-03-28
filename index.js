@@ -1,8 +1,11 @@
 import express from "express";
 import path from "path";
+import bcrypt from "bcrypt";
 import method from "method-override";
 import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
+
+import User from "./db/userSchema.js";
 import connectDB from "./db/sample.js";
 
 import { fileURLToPath } from "url";
@@ -38,6 +41,30 @@ app.get("/login", (req, res) => {
 });
 app.get("/signup", (req, res) => {
   res.render("users/signup");
+});
+app.post("/signup", async (req, res) => {
+  try {
+    // console.log(req.body);
+    const { fullname, email, phone, password, role, vehicle, seats } = req.body;
+    const hashPass = await bcrypt.hash(password, 10);
+    // console.log(hashPass);
+    const newUser = new User({
+      fullname,
+      email,
+      phone,
+      password: hashPass,
+      role,
+      vehicle,
+      seats,
+    });
+
+    await newUser.save();
+
+    res.send("User registered successfully!");
+  } catch (err) {
+    console.log(err);
+    res.redirect("/signup");
+  }
 });
 // app.listen(3000, () => {
 //   console.log("Server is running on http://localhost:3000");
