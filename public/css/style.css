@@ -19,12 +19,12 @@ body {
 /* .active-link::after {
   content: "";
   /* position: absolute; */
-  /* left: 10px;
+/* left: 10px;
   bottom: -6px;
   width: calc(100% - 10px);
   height: 2px; */
-  /* background: #a5f14f; */
-  /* border-radius: 2px; */
+/* background: #a5f14f; */
+/* border-radius: 2px; */
 /* } */
 
 .bg {
@@ -64,6 +64,9 @@ body {
   justify-content: space-between;
   font-size: 16px;
 }
+.nav-item {
+  padding-right: 10px;
+}
 
 a {
   padding-left: 10px !important;
@@ -81,7 +84,7 @@ a {
 }
 
 .nav-link {
-  transition: all 0.35s ease !important;
+  transition: all 0.4s ease-in-out !important;
 }
 
 .nav-link .active {
@@ -119,7 +122,7 @@ nav ul {
   padding-left: 0 !important;
   text-decoration: none;
   font-size: 15px;
-  transition: all 0.35s ease !important;
+  transition: all 0.4s ease-in-out;
 }
 
 .log:hover {
@@ -289,6 +292,7 @@ nav ul {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 40px;
+  transition: all 0.4s ease-in-out;
 }
 .chart-card:hover {
   transform: translateY(-6px);

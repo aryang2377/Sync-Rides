@@ -1,109 +1,110 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
-<body>
+<div class="dashboard-container">
+  <main class="main-content">
+    <header class="main-header">
+      <div class="welcome-section">
+        <h2>
+          Welcome Back, Alex!
+          <span class="material-icons header-avatar">account_circle</span>
+        </h2>
+        <p>You have 3 rides scheduled for today</p>
+      </div>
+    </header>
 
-    <div class="dashboard-container">
-        <main class="main-content">
-            <header class="main-header">
-                <div class="welcome-section">
-                    <h2>Welcome Back, Alex! <img src="path/to/alex-avatar.jpg" alt="Alex Profile" class="header-avatar"></h2>
-                    <p>You have 3 rides scheduled for today</p>
-                </div>
-            </header>
+    <section class="kpi-section">
+      <div class="kpi-card">
+        <h3>Current Rating</h3>
+        <div class="kpi-value-row">
+          <span class="star-rating">★ 4.9 ★</span>
+          <div class="mock-sparkline-graph"></div>
+        </div>
+      </div>
 
-            <section class="kpi-section">
-                <div class="kpi-card">
-                    <h3>Current Rating</h3>
-                    <div class="kpi-value-row">
-                        <span class="star-rating">★ 4.9 ★</span>
-                        <div class="mock-sparkline-graph"></div> 
-                    </div>
-                </div>
+      <div class="kpi-card">
+        <h3>Total Earnings (This Month)</h3>
+        <div class="kpi-value-row">
+          <span class="currency-symbol">$</span>
+          <span class="large-number">1,250.00</span>
+        </div>
+        <a href="#" class="details-link">View Details ></a>
+      </div>
 
-                <div class="kpi-card">
-                    <h3>Total Earnings (This Month)</h3>
-                    <div class="kpi-value-row">
-                        <span class="currency-symbol">$</span> <span class="large-number">1,250.00</span>
-                    </div>
-                    <a href="#" class="details-link">view details ></a>
-                </div>
+      <div class="kpi-card">
+        <h3>Upcoming Carpools</h3>
+        <div class="kpi-value-row">
+          <span class="large-number">3</span>
+        </div>
+        <button class="view-all-btn">View All</button>
+      </div>
 
-                <div class="kpi-card">
-                    <h3>Upcoming Carpools</h3>
-                    <div class="kpi-value-row">
-                        <span class="large-number">3</span>
-                    </div>
-                    <button class="view-all-btn">view all</button>
-                </div>
+      <div class="kpi-card status-card online">
+        <h3>Active Status</h3>
+        <div class="status-indicator">
+          <div class="status-text">Online</div>
+          <p>Ready to Match</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked />
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </section>
 
-                <div class="kpi-card status-card online">
-                    <h3>Active Status</h3>
-                    <div class="status-indicator">
-                        <div class="status-text">Online</div>
-                        <p>Ready to Match</p>
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </section>
+    <section class="map-actions-section">
+      <div class="map-panel">
+        <div id="map-mock" class="mock-map">
+          Map Placeholder <br />
+          (Interactive Map Library Required)
+        </div>
+      </div>
 
-            <section class="map-actions-section">
-                <div class="map-panel">
-                    <div id="map-mock" class="mock-map">
-                        Map Placeholder <br> (Interactive Map Library Required)
-                        </div>
-                </div>
+      <div class="actions-panel">
+        <h3>Quick Actions</h3>
+        <button class="action-btn offer-btn">
+          <i class="fas fa-bell"></i>
+          <span>Offers Received</span>
+          <span class="badge">5</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-calendar-alt"></i> <span>Edit Schedule</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-headset"></i> <span>Contact Support</span>
+        </button>
+      </div>
+    </section>
 
-                <div class="actions-panel">
-                    <h3>Quick Actions</h3>
-                    <button class="action-btn offer-btn">
-                        <i class="fas fa-bell"></i> 
-                        <span>Offers Received</span> 
-                        <span class="badge">5</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fas fa-calendar-alt"></i> <span>Edit Schedule</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fas fa-headset"></i> <span>Contact Support</span>
-                    </button>
-                </div>
-            </section>
-
-            <section class="rides-table-section">
-                <h3>Active & Upcoming Rides</h3>
-                <div class="rides-table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Passenger Name</th>
-                                <th>Route</th>
-                                <th>Pickup Time</th>
-                                <th>Fare</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="passenger-cell">
-                                    <img src="path/to/alex-avatar.jpg" alt="Alex" class="table-avatar">
-                                    Alex Smith
-                                </td>
-                                <td>Start - End: Brasinar</td>
-                                <td>06:00 AM</td>
-                                <td class="fare-cell">$150</td>
-                                <td>
-                                    <button class="table-btn details">View Details</button>
-                                    <button class="table-btn accept">Accept Offer</button>
-                                </td>
-                            </tr>
-                             </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </main>
-
-    </div>
+    <section class="rides-table-section">
+      <h3>Active & Upcoming Rides</h3>
+      <div class="rides-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Passenger Name</th>
+              <th>Route</th>
+              <th>Pickup Time</th>
+              <th>Fare</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="passenger-cell">
+                <i class="bi bi-person-fill table-avatar"></i>
+                <span>Alex Smith</span>
+              </td>
+              <td>Start - End: Brasinar</td>
+              <td>06:00 AM</td>
+              <td class="fare-cell">$150</td>
+              <td>
+                <button class="table-btn details">View Details</button>
+                <button class="table-btn accept">Accept Offer</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
