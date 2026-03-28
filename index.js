@@ -45,7 +45,7 @@ app.get("/signup", (req, res) => {
 app.post("/signup", async (req, res) => {
   try {
     // console.log(req.body);
-    const { fullname, email, phone, password, role, vehicle, seats } = req.body;
+    const { fullname, email, phone, password, role, vehicle_model, seats } = req.body;
     const hashPass = await bcrypt.hash(password, 10);
     // console.log(hashPass);
     const newUser = new User({
@@ -54,7 +54,7 @@ app.post("/signup", async (req, res) => {
       phone,
       password: hashPass,
       role,
-      vehicle,
+      vehicle_model,
       seats,
     });
 
