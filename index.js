@@ -1,15 +1,21 @@
-import express from "express"
-import path from "path"
-import method from "method-override"
-import ejsMate from "ejs-mate"
-import dotenv from "dotenv"
+import express from "express";
+import path from "path";
+import method from "method-override";
+import ejsMate from "ejs-mate";
+import dotenv from "dotenv";
 import connectDB from "./db/sample.js";
+
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(method("_method"));
@@ -38,15 +44,15 @@ app.get("/signup", (req, res) => {
 // });
 
 dotenv.config({
-  path: "./.env"
+  path: "./.env",
 });
 
 connectDB()
   .then(() => {
     app.listen(process.env.PORT || 3000, () => {
       console.log(`Server is running at http://localhost:3000`);
-    })
+    });
   })
   .catch((err) => {
-    console.log("MONGO Db connection failed", err);
-  })
+    console.log("MONGO DB connection failed", err);
+  });
