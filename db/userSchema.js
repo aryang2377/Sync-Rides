@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true, 
+    lowercase:true,
   },
   phone: {
     type: String,
@@ -23,7 +24,7 @@ const userSchema = new mongoose.Schema({
     enum: ["driver", "rider"],
     required: true,
   },
-  vehicle: {
+  vehicle_model: {
     type: String,
     required: function () {
       return this.role === "driver";
