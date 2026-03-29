@@ -1,0 +1,14 @@
+#map {
+  border-radius: 15px;
+  height: 400px;
+  width: 95%;
+}
+.mapboxgl-ctrl-logo {
+  background-image: none !important;
+}
+.mapboxgl-ctrl-attrib-inner {
+  visibility: hidden !important;
+}
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+  background-color: transparent !important;
+}
