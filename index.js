@@ -43,28 +43,24 @@ app.get("/signup", (req, res) => {
   res.render("users/signup");
 });
 app.post("/signup", async (req, res) => {
-  try {
-    // console.log(req.body);
-    const { fullname, email, phone, password, role, vehicle_model, seats } = req.body;
-    const hashPass = await bcrypt.hash(password, 10);
-    // console.log(hashPass);
-    const newUser = new User({
-      fullname,
-      email,
-      phone,
-      password: hashPass,
-      role,
-      vehicle_model,
-      seats,
-    });
+  
+  const { fullname, email, phone, password, role, vehicle_model, seats } =
+    req.body;
+  const hashPass = await bcrypt.hash(password, 10);
+  // console.log(hashPass);
+  const newUser = new User({
+    fullname,
+    email,
+    phone,
+    password: hashPass,
+    role,
+    vehicle_model,
+    seats,
+  });
 
-    await newUser.save();
+  await newUser.save();
 
-    res.send("User registered successfully!");
-  } catch (err) {
-    console.log(err);
-    res.redirect("/signup");
-  }
+  res.redirect("listings/dashboard");
 });
 
 app.get("/about", (req, res) => {
