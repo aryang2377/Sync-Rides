@@ -35,7 +35,9 @@ app.get("/", (req, res) => {
   res.render("listings/home");
 });
 app.get("/dashboard", (req, res) => {
-  res.render("listings/dashboard");
+  res.render("listings/dashboard", {
+    mapToken: process.env.MAP_TOKEN || "",
+  });
 });
 app.get("/login", (req, res) => {
   res.render("users/login");

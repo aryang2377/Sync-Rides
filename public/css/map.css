@@ -1,7 +1,7 @@
 #map {
   border-radius: 15px;
   height: 400px;
-  width: 95%;
+  width: 100%;
 }
 .mapboxgl-ctrl-logo {
   background-image: none !important;
