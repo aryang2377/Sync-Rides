@@ -5,7 +5,7 @@ import method from "method-override";
 import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
 
-import User from "./db/userSchema.js";
+import User from "./models/user.model.js";
 import connectDB from "./db/sample.js";
 
 import { fileURLToPath } from "url";
