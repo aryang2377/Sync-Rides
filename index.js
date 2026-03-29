@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import method from "method-override";
 import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
+import Rating from "./models/rating.model.js";
 
 import User from "./models/user.model.js";
 import connectDB from "./db/sample.js";
@@ -71,6 +72,31 @@ app.get("/about", (req, res) => {
 //   console.log("Server is running on http://localhost:3000");
 // });
 
+
+const createReview = async(req,res) =>{
+  try{
+    const {booking,driver,rating,comment}=req.body;
+
+    const review = await Review.create({
+      booking,
+      driver,
+      rating,
+      comment,
+      reviewer: driver,
+    });
+    res.status(201).json({
+      success: true,
+      review,
+    });
+  }
+  catch (err) {
+    res.status(500).json({
+      message:err
+    });
+  }
+}
+
+
 dotenv.config({
   path: "./.env",
 });
@@ -83,4 +109,4 @@ connectDB()
   })
   .catch((err) => {
     console.log("MONGO DB connection failed", err);
-  });
+  })
