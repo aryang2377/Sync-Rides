@@ -502,3 +502,7 @@ img {
     text-align: center;
   }
 }
+.invalid-feedback {
+  padding-left: 10px;
+  text-align: left;
+}

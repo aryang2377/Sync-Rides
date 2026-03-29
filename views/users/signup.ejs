@@ -64,6 +64,7 @@
         <div class="invalid-feedback">Password is required</div>
         <label for="password" class="form-label mb-0">Password</label>
       </div>
+
       <select
         name="role"
         class="form-select mt-3"
@@ -71,27 +72,30 @@
         required
         style="height: 47px"
       >
-        <option selected hidden>Select role</option>
+        <option value="" disabled selected hidden>Select role</option>
         <option value="driver">Driver</option>
         <option value="rider">Rider</option>
       </select>
-      <div class="mt-3">
-        <input
-          name="vehicle"
-          placeholder="Vehicle model (drivers only)"
-          type="text"
-          class="form-control"
-        />
-      </div>
-      <div class="mt-3">
-        <input
-          name="seats"
-          placeholder="Available seats (drivers only)"
-          type="number"
-          min="1"
-          max="8"
-          class="form-control"
-        />
+      <div class="invalid-feedback">Role is required</div>
+      <div id="driver-fields" class="mt-3">
+        <div class="mb-3">
+          <input
+            name="vehicle"
+            placeholder="Vehicle model (drivers only)"
+            type="text"
+            class="form-control"
+          />
+        </div>
+        <div>
+          <input
+            name="seats"
+            placeholder="Available seats (drivers only)"
+            type="number"
+            min="1"
+            max="8"
+            class="form-control"
+          />
+        </div>
       </div>
 
       <br />
