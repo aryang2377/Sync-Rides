@@ -11,7 +11,7 @@ const ratingSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  reviewee: {
+  review: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
