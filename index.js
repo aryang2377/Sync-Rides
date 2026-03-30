@@ -125,8 +125,7 @@ const createReview = async (req, res) => {
       success: true,
       review,
     });
-  }
-  catch (err) {
+  } catch (err) {
     res.status(500).json({
       message: err
     });
@@ -218,4 +217,4 @@ connectDB()
   })
   .catch((err) => {
     console.log("MONGO DB connection failed", err);
-  })
+  });
