@@ -5,7 +5,8 @@ import method from "method-override";
 import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
 import Rating from "./models/rating.model.js";
-
+import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken"
 import User from "./models/user.model.js";
 import connectDB from "./db/sample.js";
 
@@ -97,6 +98,65 @@ const createReview = async(req,res) =>{
     });
   }
 }
+
+export const loginUser = async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email
+  });
+
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000
+  });
+
+  res.json({
+    message: "Login successful"
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 dotenv.config({
