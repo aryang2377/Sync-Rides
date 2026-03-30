@@ -46,7 +46,6 @@ app.get("/signup", (req, res) => {
   res.render("users/signup");
 });
 app.post("/signup", async (req, res) => {
-  
   const { fullname, email, phone, password, role, vehicle_model, seats } =
     req.body;
   const hashPass = await bcrypt.hash(password, 10);
@@ -63,7 +62,7 @@ app.post("/signup", async (req, res) => {
 
   await newUser.save();
 
-  res.redirect("listings/dashboard");
+  res.redirect("/dashboard");
 });
 
 app.get("/about", (req, res) => {
@@ -74,10 +73,9 @@ app.get("/about", (req, res) => {
 //   console.log("Server is running on http://localhost:3000");
 // });
 
-
-const createReview = async(req,res) =>{
-  try{
-    const {booking,driver,rating,comment}=req.body;
+const createReview = async (req, res) => {
+  try {
+    const { booking, driver, rating, comment } = req.body;
 
     const review = await Review.create({
       booking,
@@ -90,14 +88,12 @@ const createReview = async(req,res) =>{
       success: true,
       review,
     });
-  }
-  catch (err) {
+  } catch (err) {
     res.status(500).json({
-      message:err
+      message: err,
     });
   }
-}
-
+};
 
 dotenv.config({
   path: "./.env",
@@ -111,4 +107,4 @@ connectDB()
   })
   .catch((err) => {
     console.log("MONGO DB connection failed", err);
-  })
+  });
