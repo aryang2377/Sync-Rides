@@ -114,7 +114,7 @@ const createReview = async (req, res) => {
   try {
     const { booking, driver, rating, comment } = req.body;
 
-    const review = await Review.create({
+    const review = await Rating.create({
       booking,
       driver,
       rating,
