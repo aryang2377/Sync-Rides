@@ -6,11 +6,13 @@ import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
 import Rating from "./models/rating.model.js";
 import cookieParser from "cookie-parser";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 import User from "./models/user.model.js";
 import connectDB from "./db/sample.js";
 
 import { fileURLToPath } from "url";
+
+dotenv.config({ path: "./.env" });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,34 +21,41 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+
+const globalMiddleware = (req, res, next) => {
+  res.locals.currentPath = req.path;
+  res.locals.isAuthenticated = Boolean(req.cookies?.token);
+  next();
+};
+
+app.use(globalMiddleware);
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(method("_method"));
 
 app.engine("ejs", ejsMate);
 
-app.use((req, res, next) => {
-  res.locals.currentPath = req.path;
-  next();
-});
-
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
+
 app.get("/dashboard", (req, res) => {
   res.render("listings/dashboard", {
     mapToken: process.env.MAP_TOKEN || "",
   });
 });
+
 app.get("/login", (req, res) => {
   res.render("users/login");
 });
+
 app.get("/signup", (req, res) => {
   res.render("users/signup");
 });
-app.post("/signup", async (req, res) => {
+
+app.post("/signup", async (req, res, next) => {
   try {
     const { fullname, email, phone, password, role, vehicle_model, seats } =
       req.body;
@@ -66,7 +75,7 @@ app.post("/signup", async (req, res) => {
 
     res.redirect("/dashboard");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
@@ -78,37 +87,37 @@ app.get("/about", (req, res) => {
 //   console.log("Server is running on http://localhost:3000");
 // });
 
-
-app.post("/login", async (req, res) => {
+app.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    const ismatch = await bcrypt.compare(
-      password, user.password
-    )
-     if (!ismatch) {
-      return res.send("Wrong password");
+    if (!user) {
+      return res
+        .status(401)
+        .render("error", { message: "Invalid email or password" });
     }
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const ismatch = await bcrypt.compare(password, user.password);
+    if (!ismatch) {
+      return res
+        .status(401)
+        .render("error", { message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.redirect("/dashboard");
-
   } catch (err) {
-    res.send(err.message);
+    next(err);
   }
 });
-
-
 
 const createReview = async (req, res) => {
   try {
@@ -127,86 +136,23 @@ const createReview = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: err
+      message: err,
     });
   }
-}
+};
 
+// 404 → convert to error
+app.use((req, res, next) => {
+  const err = new Error("Invalid Input");
+  err.status = 404;
+  next(err);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-// export const loginUser = async (req, res) => {
-//   const user = await User.findOne({
-//     email: req.body.email
-//   });
-
-//   const token = jwt.sign(
-//     { id: user._id },
-//     process.env.JWT_SECRET,
-//     { expiresIn: "7d" }
-//   );
-
-//   res.cookie("token", token, {
-//     httpOnly: true,
-//     maxAge: 7 * 24 * 60 * 60 * 1000
-//   });
-
-//   res.json({
-//     message: "Login successful"
-//   });
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-dotenv.config({
-  path: "./.env",
+// single error handler
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).render("error", {
+    message: err.message,
+  });
 });
 
 connectDB()
