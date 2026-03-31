@@ -2,51 +2,61 @@
   <div class="container-fluid">
     <img src="/img/logo.png" alt="Sync Rides logo" height="60px" width="60px" />
     <a class="navbar-brand text" href="/">
-      <img src="/img/text1.png" height="70px" width="137px"
-    /></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+      <img src="/img/text1.png" height="70px" width="137px" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link <%= currentPath === '/dashboard' ? 'active-link' : '' %>" href="/dashboard">
-  Dashboard
-</a>
+            Dashboard
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link <%= currentPath === '/rides' ? 'active-link' : '' %>" href="/rides">
-  Rides
-</a>
+            Rides
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link <%= currentPath === '/drivers' ? 'active-link' : '' %>" href="/drivers">
-  Drivers
-</a>
+            Drivers
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link <%= currentPath === '/about' ? 'active-link' : '' %>" href="/about">
-  About
-</a>
+            About
+          </a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="profile" href="#">
-            <span class="material-icons profile-log">account_circle</span><br />
-          </a>
-          <a class="log" href="/login">Login </a>
-          <span class="profile-log">/</span>
-          <a class="log" href="/signup"> Signup</a>
-        </li>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="profile" href="#">
+              <span class="material-icons profile-log">
+                account_circle
+              </span><br />
+            </a>
+
+            <% if (!user) { %>
+
+              <a class="log" href="/login">Login</a>
+              <span class="profile-log">/</span>
+              <a class="log" href="/signup">Signup</a>
+
+              <% } else { %>
+
+                <form action="/logout" method="POST" style="display:inline;">
+                  <button type="submit" class="log" style="background:none;border:none;cursor:pointer;">
+                    Logout
+                  </button>
+                </form>
+
+                <% } %>
+
+          </li>
+        </ul>
       </ul>
     </div>
   </div>
