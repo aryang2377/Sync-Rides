@@ -37,6 +37,33 @@ app.use(method("_method"));
 
 app.engine("ejs", ejsMate);
 
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  next();
+});
+
+const auth = (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.redirect("/login");
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    req.user = decoded;
+
+    next();
+
+  } catch (err) {
+    return res.redirect("/login");
+  }
+};
+
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
@@ -55,7 +82,11 @@ app.get("/signup", (req, res) => {
   res.render("users/signup");
 });
 
-app.post("/signup", async (req, res, next) => {
+app.get("/about",(req,res)=>{
+  res.render("listings/about");
+})
+
+app.post("/signup", async (req, res) => {
   try {
     const { fullname, email, phone, password, role, vehicle_model, seats } =
       req.body;
@@ -77,10 +108,6 @@ app.post("/signup", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
-
-app.get("/about", (req, res) => {
-  res.render("listings/about");
 });
 
 // app.listen(3000, () => {
@@ -119,34 +146,51 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-const createReview = async (req, res) => {
-  try {
+
+
+app.post("/review", auth,async (req, res) => 
+{
+  try 
+  {
     const { booking, driver, rating, comment } = req.body;
 
-    const review = await Review.create({
+    const review = await Rating.create({
       booking,
       driver,
       rating,
       comment,
-      reviewer: driver,
+      reviewer: req.user.id,
     });
     res.status(201).json({
       success: true,
       review,
     });
-  } catch (err) {
+  } 
+  catch (err) 
+  {
     res.status(500).json({
       message: err,
     });
   }
-};
-
-// 404 → convert to error
-app.use((req, res, next) => {
-  const err = new Error("Invalid Input");
-  err.status = 404;
-  next(err);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const loginUser = async (req, res) => {
+//   const user = await User.findOne({
+//     email: req.body.email
+//   });
 
 // single error handler
 app.use((err, req, res, next) => {

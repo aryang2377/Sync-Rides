@@ -1,79 +1,275 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
-<div class="about-page">
+<main class="about-container">
+
+  <!-- HERO -->
+
   <section class="about-hero">
-    <div class="about-copy">
-      <p class="about-eyebrow">About Sync Rides</p>
-      <h2>Safe, smart, and sustainable ride-sharing for every journey.</h2>
+
+    <div class="about-badge">
+      ✨ About Sync Rides
+    </div>
+
+    <h1>
+      Safe, Smart & Sustainable
+      <br>
+      Ride-Sharing for Every Journey
+    </h1>
+
+    <p class="tagline">
+      Sync Rides is built to make your commute easier, more affordable,
+      and more trusted. We connect local drivers and riders with
+      transparent pricing, live updates, and a community-first experience.
+    </p>
+
+  </section>
+
+
+
+  <!-- MISSION / VISION / PROMISE -->
+
+  <section class="mission-vision-row">
+
+    <div class="mvp-card">
+      <div class="mvp-icon">🎯</div>
+
+      <h3>Our Mission</h3>
+
       <p>
-        Sync Rides is built to make your commute easier, more affordable, and
-        more trusted. We connect local drivers and riders with transparent
-        pricing, live updates, and a community-first experience.
+        To simplify daily travel by making shared rides
+        easy, affordable and accessible for every community.
       </p>
-      <div class="about-actions">
-        <a href="/signup" class="btn1 about-btn">Become a Driver</a>
-        <a href="/login" class="btn2 about-btn">Book a Ride</a>
+    </div>
+
+
+    <div class="mvp-card">
+      <div class="mvp-icon">🌍</div>
+
+      <h3>Our Vision</h3>
+
+      <p>
+        To build the most trusted and connected carpool network
+        where every trip feels smarter and safer.
+      </p>
+    </div>
+
+
+    <div class="mvp-card">
+      <div class="mvp-icon">⚡</div>
+
+      <h3>Our Promise</h3>
+
+      <p>
+        Clear pricing, fast support, and a driver-first app
+        experience that keeps riders and drivers moving together.
+      </p>
+    </div>
+
+  </section>
+
+
+
+  <!-- WHY CHOOSE -->
+
+  <section class="why-section">
+
+    <h2 class="section-title">
+      Why Choose Sync Rides?
+    </h2>
+
+    <div class="features-grid">
+
+      <div class="feature-item">
+        <div class="feature-icon">🚘</div>
+
+        <h4>Reliable Rides</h4>
+
+        <p>
+          Get on-demand visibility, easy route planning,
+          and dependable driver support across every trip.
+        </p>
+      </div>
+
+
+      <div class="feature-item">
+        <div class="feature-icon">🤝</div>
+
+        <h4>Trusted Community</h4>
+
+        <p>
+          Verified drivers, transparent reviews,
+          and a secure platform designed to keep every journey safe.
+        </p>
+      </div>
+
+
+      <div class="feature-item">
+        <div class="feature-icon">🌱</div>
+
+        <h4>Eco-Friendly Travel</h4>
+
+        <p>
+          Carpool smarter to reduce your carbon footprint
+          and contribute to a cleaner environment.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- STATS -->
+
+  <section class="promise-stats">
+
+    <div class="stat">
+      <div class="stat-number">
+        <%= locals.stats ? stats.activeRiders : '10k+' %>
+      </div>
+
+      <div class="stat-label">
+        Active riders monthly
       </div>
     </div>
 
-    <div class="about-hero-cards">
-      <article class="about-card">
-        <span class="about-card-icon material-icons">directions_car</span>
-        <h3>Reliable Rides</h3>
-        <p>
-          Get on-demand visibility, easy route planning, and dependable driver
-          support across every trip.
-        </p>
-      </article>
-      <article class="about-card">
-        <span class="about-card-icon material-icons">shield</span>
-        <h3>Trusted Community</h3>
-        <p>
-          Verified drivers, transparent reviews, and a platform designed to keep
-          every journey safe.
-        </p>
-      </article>
-      <article class="about-card">
-        <span class="about-card-icon material-icons">eco</span>
-        <h3>Eco-Friendly Travel</h3>
-        <p>
-          Carpool smarter to reduce traffic, lower commute costs, and make a
-          positive impact on the environment.
-        </p>
-      </article>
+
+    <div class="stat">
+      <div class="stat-number">
+        <%= locals.stats ? stats.satisfactionRate : '98%' %>
+      </div>
+
+      <div class="stat-label">
+        Satisfaction rate
+      </div>
     </div>
+
+
+    <div class="stat">
+      <div class="stat-number">
+        <%= locals.stats ? stats.co2Saved : '🌿 2.4k kg' %>
+      </div>
+
+      <div class="stat-label">
+        CO₂ saved together
+      </div>
+    </div>
+
+
+    <div class="stat">
+      <div class="stat-number">
+        <%= locals.stats ? stats.supportStatus : '24/7' %>
+      </div>
+
+      <div class="stat-label">
+        Support & Safety
+      </div>
+    </div>
+
   </section>
 
-  <section class="about-values">
-    <div class="value-block">
-      <h2>Our Mission</h2>
-      <p>
-        To simplify daily travel by making shared rides easy, affordable, and
-        accessible for every community.
-      </p>
-    </div>
-    <div class="value-block">
-      <h2>Our Vision</h2>
-      <p>
-        To build the most trusted and connected carpool network where every trip
-        feels smarter and safer.
-      </p>
-    </div>
-    <div class="value-block">
-      <h2>Our Promise</h2>
-      <p>
-        Clear pricing, fast support, and a driver-first app experience that
-        keeps riders and drivers moving together.
-      </p>
-    </div>
-  </section>
 
-  <section class="about-cta">
-    <h2>Ready to ride with Sync Rides?</h2>
+
+  <!-- STORY -->
+
+  <section class="story-block">
+
+    <h2>
+      📍 Built for real connections
+    </h2>
+
     <p>
-      Join our growing community today and experience the better way to share
-      every commute.
+      Sync Rides started with a simple belief:
+      commuting shouldn't feel lonely or expensive.
+      We're blending technology with human trust —
+      giving neighbors, professionals, and students
+      a seamless way to share rides.
     </p>
-    <a href="/signup" class="btn1">Get Started</a>
+
+    <div class="cta-group">
+
+      <a href="/become-driver" class="btn-primary">
+        🚖 Become a Driver
+      </a>
+
+      <a href="/book-ride" class="btn-secondary">
+        📱 Book a Ride
+      </a>
+
+    </div>
+
   </section>
-</div>
+
+
+
+  <!-- DIVIDER -->
+
+  <hr>
+
+
+
+  <!-- PROMISE LINE -->
+
+  <section class="promise-highlight">
+
+    <p>
+      ⚡
+      <span class="highlight">
+        Clear pricing, fast support, and a driver-first experience
+      </span>
+      — we keep riders and drivers moving together,
+      with full transparency and community care.
+    </p>
+
+  </section>
+
+
+
+  <!-- READY CTA -->
+
+  <section class="ready-section">
+
+    <h2 class="ready-title">
+      Ready to ride with Sync Rides?
+    </h2>
+
+    <p class="ready-text">
+      Join our growing community today and experience
+      the better way to share every commute.
+    </p>
+
+
+
+    <% if (locals.user && user.isLoggedIn) { %>
+
+      <p class="welcome-text">
+        Welcome back,
+        <%= user.name || 'Rider' %> 🚀
+      </p>
+
+      <a href="/dashboard" class="btn-primary">
+        Go to Dashboard →
+      </a>
+
+    <% } else { %>
+
+      <a href="/signup" class="btn-primary">
+        Get Started →
+      </a>
+
+    <% } %>
+
+  </section>
+
+
+
+  <!-- FOOTER NOTE -->
+
+  <div class="about-footer">
+
+    Sync Rides — safe, smart, sustainable mobility for every journey.
+
+  </div>
+
+</main>
