@@ -31,6 +31,31 @@ const globalMiddleware = (req, res, next) => {
 
 app.use(globalMiddleware);
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  const token = req.cookies.token;
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );  
+
+      req.user = decoded;
+      res.locals.user = decoded;
+
+    } catch (err) {
+      res.locals.user = null;
+    }
+  }
+  else {
+    res.locals.user = null;
+  }
+
+  next();
+});
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(method("_method"));
@@ -67,8 +92,7 @@ const auth = (req, res, next) => {
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
-
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", auth, (req, res) => {
   res.render("listings/dashboard", {
     mapToken: process.env.MAP_TOKEN || "",
   });
@@ -82,7 +106,7 @@ app.get("/signup", (req, res) => {
   res.render("users/signup");
 });
 
-app.get("/about",(req,res)=>{
+app.get("/about", (req, res) => {
   res.render("listings/about");
 })
 
@@ -118,17 +142,11 @@ app.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      return res
-        .status(401)
-        .render("error", { message: "Invalid email or password" });
-    }
-
-    const ismatch = await bcrypt.compare(password, user.password);
+    const ismatch = await bcrypt.compare(
+      password, user.password
+    )
     if (!ismatch) {
-      return res
-        .status(401)
-        .render("error", { message: "Invalid email or password" });
+      return res.send("Wrong password");
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -148,10 +166,8 @@ app.post("/login", async (req, res, next) => {
 
 
 
-app.post("/review", auth,async (req, res) => 
-{
-  try 
-  {
+app.post("/review", auth, async (req, res) => {
+  try {
     const { booking, driver, rating, comment } = req.body;
 
     const review = await Rating.create({
@@ -165,16 +181,19 @@ app.post("/review", auth,async (req, res) =>
       success: true,
       review,
     });
-  } 
-  catch (err) 
-  {
+  }
+  catch (err) {
     res.status(500).json({
       message: err,
     });
   }
 });
 
+app.post("/logout", (req, res) => {
+  res.clearCookie("token");
 
+  res.redirect("/");
+});
 
 
 
