@@ -32,6 +32,28 @@ app.use((req, res, next) => {
   next();
 });
 
+const auth = (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.redirect("/login");
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    req.user = decoded;
+
+    next();
+
+  } catch (err) {
+    return res.redirect("/login");
+  }
+};
+
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
@@ -46,6 +68,11 @@ app.get("/login", (req, res) => {
 app.get("/signup", (req, res) => {
   res.render("users/signup");
 });
+
+app.get("/about",(req,res)=>{
+  res.render("listings/about");
+})
+
 app.post("/signup", async (req, res) => {
   try {
     const { fullname, email, phone, password, role, vehicle_model, seats } =
@@ -68,10 +95,6 @@ app.post("/signup", async (req, res) => {
   } catch (err) {
     res.status(500).send(err.message);
   }
-});
-
-app.get("/about", (req, res) => {
-  res.render("listings/about");
 });
 
 // app.listen(3000, () => {
@@ -110,8 +133,10 @@ app.post("/login", async (req, res) => {
 
 
 
-const createReview = async (req, res) => {
-  try {
+app.post("/review", auth,async (req, res) => 
+{
+  try 
+  {
     const { booking, driver, rating, comment } = req.body;
 
     const review = await Rating.create({
@@ -119,18 +144,20 @@ const createReview = async (req, res) => {
       driver,
       rating,
       comment,
-      reviewer: driver,
+      reviewer: req.user.id,
     });
     res.status(201).json({
       success: true,
       review,
     });
-  } catch (err) {
+  } 
+  catch (err) 
+  {
     res.status(500).json({
       message: err
     });
   }
-}
+});
 
 
 
