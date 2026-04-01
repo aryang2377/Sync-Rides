@@ -109,6 +109,7 @@
   padding-left: 10px !important;
 }
 i {
+  color: white;
   transition: all ease-in 0.25s;
 }
 i:hover {

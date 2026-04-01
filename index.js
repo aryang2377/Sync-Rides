@@ -58,8 +58,8 @@ app.engine("ejs", ejsMate);
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
-app.get("/dashboard", auth, (req, res) => {
-  if (req.user.role === "driver") {
+app.get("/dashboard", (req, res) => {
+  if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
     });
@@ -104,16 +104,7 @@ app.post("/signup", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.redirect("/rider_dashboard");
+    res.redirect("/dashboard");
   } catch (err) {
     next(err);
   }
@@ -153,7 +144,7 @@ app.post("/login", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("/rider_dashboard");
+    res.redirect("/dashboard");
   } catch (err) {
     next(err);
   }
