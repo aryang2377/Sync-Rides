@@ -93,7 +93,12 @@ app.get("/", (req, res) => {
   res.render("listings/home");
 });
 app.get("/dashboard", auth, (req, res) => {
-  res.render("listings/dashboard", {
+  if (req.user.role === "driver") {
+    return res.render("listings/driver_dashboard", {
+      mapToken: process.env.MAP_TOKEN || "",
+    });
+  }
+  return res.render("listings/rider_dashboard", {
     mapToken: process.env.MAP_TOKEN || "",
   });
 });
@@ -128,7 +133,7 @@ app.post("/signup", async (req, res) => {
 
     await newUser.save();
 
-    res.redirect("/dashboard");
+    res.redirect("/rider_dashboard");
   } catch (err) {
     next(err);
   }
@@ -158,7 +163,7 @@ app.post("/login", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("/dashboard");
+    res.redirect("/rider_dashboard");
   } catch (err) {
     next(err);
   }

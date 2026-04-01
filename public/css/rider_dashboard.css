@@ -1,0 +1,286 @@
+.dashboard-container {
+  width: 100%;
+  min-height: 100vh;
+  display: block;
+}
+
+.main-content {
+  padding: 40px;
+}
+
+/* Header */
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.welcome-section h2 {
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.header-avatar {
+  margin-left: 15px;
+  color: #ffffff;
+  font-size: 2.4rem;
+}
+
+.welcome-section p {
+  color: #7f8c8d;
+  font-size: 16px;
+}
+
+/* KPI Cards */
+
+.kpi-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.kpi-card {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  color: #2c3e50;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.kpi-card h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #95a5a6;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.kpi-value-row {
+  display: flex;
+  align-items: flex-end;
+}
+
+.large-number {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.details-link,
+.view-all-btn {
+  display: block;
+  margin-top: 10px;
+  color: #27ae60;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Status Card */
+
+.status-card {
+  position: relative;
+  padding-bottom: 60px;
+}
+
+.status-text {
+  font-size: 26px;
+  font-weight: bold;
+  color: #27ae60;
+}
+
+.status-indicator p {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+/* Toggle Switch */
+
+.switch {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #27ae60;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Map + Actions */
+
+.map-actions-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.map-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 400px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Actions Panel */
+
+.actions-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.actions-panel h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #f4f6f8;
+}
+
+.action-btn i {
+  font-size: 20px;
+}
+
+/* Table */
+
+.rides-table-section h3 {
+  margin-bottom: 20px;
+}
+
+.rides-table-container {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.rides-table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f9f9f9;
+}
+
+th,
+td {
+  padding: 18px 25px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+  font-size: 14px;
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+.fare-cell {
+  font-weight: bold;
+}
+
+.table-btn {
+  padding: 8px 15px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.table-btn.details {
+  background: #f4f6f8;
+  border: 1px solid #e0e0e0;
+}
+
+.table-btn.details:hover {
+  background: #e8ecef;
+}
+
+/* Responsive */
+
+@media (max-width: 1200px) {
+
+  .kpi-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .map-actions-section {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .kpi-section {
+    grid-template-columns: 1fr;
+  }
+
+  .map-panel {
+    height: 320px;
+  }
+
+}

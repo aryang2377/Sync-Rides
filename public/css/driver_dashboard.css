@@ -1,0 +1,403 @@
+.dashboard-container {
+  width: 100%;
+  display: block;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding: 40px;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.welcome-section h2 {
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.header-avatar {
+  display: inline-block;
+  margin-left: 15px;
+  color: #ffffff;
+  font-size: 2.4rem !important;
+  vertical-align: middle;
+  line-height: 1;
+  opacity: 0.95;
+}
+
+.table-avatar {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-right: 12px;
+}
+.welcome-section p {
+  color: #7f8c8d;
+  font-size: 16px;
+}
+
+.kpi-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.kpi-card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  color: #2c3e50;
+}
+
+.kpi-card .large-number,
+.kpi-card .currency-symbol,
+.kpi-card .star-rating,
+.kpi-card .details-link,
+.kpi-card .view-all-btn {
+  color: inherit;
+}
+
+.kpi-card h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #95a5a6;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.kpi-value-row {
+  display: flex;
+  align-items: flex-end; /* Align number to baseline */
+}
+
+.star-rating {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+}
+
+.mock-sparkline-graph {
+  /* Insert graph style here */
+  width: 60px;
+  height: 25px;
+  background-color: #e8f5e9; /* Light green background */
+  margin-left: 15px;
+}
+
+.large-number {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.details-link,
+.view-all-btn {
+  display: block;
+  margin-top: 10px;
+  color: #27ae60; /* Theme Green */
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.kpi-card a.details-link {
+  color: #2c3e50 !important;
+}
+
+/* Status Card Specifics */
+.status-card {
+  background-color: #fff;
+  position: relative;
+  padding-bottom: 60px; /* Space for the toggle switch */
+}
+
+.status-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #27ae60; /* Online Green */
+}
+
+.status-indicator p {
+  font-size: 14px;
+  color: #7f8c8d;
+}
+
+/* Simple CSS Toggle Switch */
+.switch {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #27ae60;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* --- 4. Map & Actions Styles --- */
+.map-actions-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Map is larger */
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.map-panel {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden; /* For map corners */
+  height: 400px;
+}
+
+.mock-map {
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e0; /* Map base color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-style: italic;
+  color: #666;
+  text-align: center;
+}
+
+.actions-panel,
+.map-panel,
+.rides-table-container {
+  color: #2c3e50;
+}
+
+.actions-panel {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.actions-panel h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+}
+
+.action-btn.offer-btn {
+  border-color: #27ae60;
+}
+
+.action-btn.offer-btn .badge {
+  position: static;
+  margin-left: auto;
+}
+
+.action-btn:last-child {
+  margin-bottom: 0;
+}
+
+.action-btn:hover {
+  background-color: #c7c1c1;
+}
+
+.action-btn i {
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.badge {
+  background-color: #27ae60;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.rides-table-section h3 {
+  margin-bottom: 20px;
+}
+
+.rides-table-container {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow-x: auto; /* Handle table overflow if needed */
+  
+}
+
+.rides-table-container table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f9f9f9;
+}
+
+th,
+td {
+  width: 25px;
+  padding: 18px 25px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: normal;
+}
+
+th {
+  font-size: 14px;
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+.table-avatar {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-right: 12px;
+}
+
+.fare-cell {
+  font-weight: bold;
+}
+
+.table-btn {
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+.table-btn.details {
+  background-color: #f4f6f8;
+  color: #333;
+  border: 1px solid #e0e0e0;
+}
+
+.table-btn.accept {
+  background-color: #27ae60;
+  color: #fff;
+  margin-top: 10px;
+}
+
+/* --- Responsive dashboard styling --- */
+@media (max-width: 1200px) {
+  .kpi-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .map-actions-section {
+    grid-template-columns: 1fr;
+  }
+  th,
+  td {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 22px 18px;
+  }
+
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .welcome-section h2 {
+    font-size: 24px;
+  }
+
+  .kpi-section {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card,
+  .actions-panel {
+    padding: 20px;
+  }
+
+  .map-panel {
+    height: 320px;
+  }
+
+  .action-btn {
+    padding: 14px;
+  }
+
+  .action-btn i {
+    margin-right: 10px;
+  }
+
+  th,
+  td {
+    padding: 16px;
+  }
+
+  .table-btn {
+    width: 100%;
+    margin: 10px 0 0 0;
+  }
+
+  .table-btn.accept {
+    margin-left: 0;
+  }
+}
