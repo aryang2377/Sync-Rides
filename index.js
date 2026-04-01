@@ -55,18 +55,45 @@ app.use(method("_method"));
 
 app.engine("ejs", ejsMate);
 
+// const auth = (req, res, next) => {
+//   try {
+//     const token = req.cookies.token;
+
+//     if (!token) {
+//       return res.redirect("/login");
+//     }
+
+//     const decoded = jwt.verify(
+//       token,
+//       process.env.JWT_SECRET
+//     );
+
+//     req.user = decoded;
+
+//     next();
+
+//   } catch (err) {
+//     return res.redirect("/login");
+//   }
+// };
+
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
 app.get("/dashboard", (req, res) => {
+  if (!res.locals.user) {
+    return res.redirect("/login");
+  }
   if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
     });
   }
-  return res.render("listings/rider_dashboard", {
-    mapToken: process.env.MAP_TOKEN || "",
-  });
+  else {
+    return res.render("listings/rider_dashboard", {
+      mapToken: process.env.MAP_TOKEN || "",
+    });
+  }
 });
 
 app.get("/login", (req, res) => {
@@ -144,7 +171,7 @@ app.post("/login", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("/dashboard");
+    res.redirect("/rider_dashboard");
   } catch (err) {
     next(err);
   }
