@@ -88,8 +88,7 @@ app.get("/dashboard", (req, res) => {
     return res.render("listings/driver_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
     });
-  }
-  else {
+  } else {
     return res.render("listings/rider_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
     });
@@ -171,7 +170,7 @@ app.post("/login", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("/rider_dashboard");
+    res.redirect("/dashboard");
   } catch (err) {
     next(err);
   }
