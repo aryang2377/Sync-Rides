@@ -218,7 +218,6 @@ app.use((req, res, next) => {
 
 // single error handler
 app.use((err, req, res, next) => {
-  console.error(err); // always log error
   res.status(err.status || 500).render("error", {
     message: err.message || "Something went wrong",
   });
