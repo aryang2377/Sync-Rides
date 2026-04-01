@@ -23,7 +23,7 @@
 
   const roleSelect = document.querySelector('select[name="role"]');
   const driverFields = document.getElementById("driver-fields");
-  const vehicleInput = document.querySelector('input[name="vehicle"]');
+  const vehicleInput = document.querySelector('input[name="vehicle_model"]');
   const seatsInput = document.querySelector('input[name="seats"]');
 
   if (roleSelect && driverFields && vehicleInput && seatsInput) {

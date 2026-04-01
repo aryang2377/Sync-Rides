@@ -55,18 +55,45 @@ app.use(method("_method"));
 
 app.engine("ejs", ejsMate);
 
+// const auth = (req, res, next) => {
+//   try {
+//     const token = req.cookies.token;
+
+//     if (!token) {
+//       return res.redirect("/login");
+//     }
+
+//     const decoded = jwt.verify(
+//       token,
+//       process.env.JWT_SECRET
+//     );
+
+//     req.user = decoded;
+
+//     next();
+
+//   } catch (err) {
+//     return res.redirect("/login");
+//   }
+// };
+
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
-app.get("/dashboard", auth, (req, res) => {
-  if (req.user.role === "driver") {
+app.get("/dashboard", (req, res) => {
+  if (!res.locals.user) {
+    return res.redirect("/login");
+  }
+  if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
     });
   }
-  return res.render("listings/rider_dashboard", {
-    mapToken: process.env.MAP_TOKEN || "",
-  });
+  else {
+    return res.render("listings/rider_dashboard", {
+      mapToken: process.env.MAP_TOKEN || "",
+    });
+  }
 });
 
 app.get("/login", (req, res) => {
@@ -104,16 +131,7 @@ app.post("/signup", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
-    res.redirect("/rider_dashboard");
+    res.redirect("/dashboard");
   } catch (err) {
     next(err);
   }
@@ -153,7 +171,12 @@ app.post("/login", async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("/rider_dashboard");
+    if (res.locals.user.role === "driver") {
+      return res.redirect("/driver_dashboard");
+    }
+    else {
+      return res.redirect("/rider_dashboard");
+    }
   } catch (err) {
     next(err);
   }
