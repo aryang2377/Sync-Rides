@@ -37,10 +37,7 @@ const ratingSchema = new mongoose.Schema(
   }
 );
 
-ratingSchema.index(
-  { booking: 1, reviewer: 1 },
-  { unique: true }
-);
+ratingSchema.index({ booking: 1, reviewer: 1 }, { unique: true });
 
 const Rating = mongoose.model("Rating", ratingSchema);
 
