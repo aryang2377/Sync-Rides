@@ -168,6 +168,11 @@ app.post("/login", async (req, res, next) => {
 //   }
 // };
 
+app.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/");
+});
+
 // 404 → convert to error
 app.use((req, res, next) => {
   const err = new Error("Page Not Found");
