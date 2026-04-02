@@ -5,7 +5,8 @@
     <header class="main-header">
       <div class="welcome-section">
         <h2>
-          Welcome Back, Alex!
+          Welcome Back, <%= user && user.fullname ? user.fullname : 'NewUser' %>
+          !
           <span class="material-icons header-avatar">account_circle</span>
         </h2>
         <p>You have 3 rides scheduled for today</p>

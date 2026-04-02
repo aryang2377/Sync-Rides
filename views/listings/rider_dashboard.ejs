@@ -1,43 +1,31 @@
 <% layout('/layouts/boilerplate.ejs') %>
 
 <div class="dashboard-container">
-
   <main class="main-content">
-
     <!-- Header -->
     <header class="main-header">
-
       <div class="welcome-section">
         <h2>
-          Welcome Back, Rider!
-          <span class="material-icons header-avatar">
-            account_circle
-          </span>
+          Welcome Back, <%= user && user.fullname ? user.fullname : 'NewUser' %>
+          !
+          <span class="material-icons header-avatar"> account_circle </span>
         </h2>
 
-        <p>
-          You have 2 rides scheduled for today
-        </p>
+        <p>You have 2 rides scheduled for today</p>
       </div>
-
     </header>
 
     <!-- KPI Section -->
     <section class="kpi-section">
-
       <!-- Total Trips -->
       <div class="kpi-card">
         <h3>Total Trips</h3>
 
         <div class="kpi-value-row">
-          <span class="large-number">
-            18
-          </span>
+          <span class="large-number"> 18 </span>
         </div>
 
-        <a href="/history" class="details-link">
-          View History >
-        </a>
+        <a href="/history" class="details-link"> View History > </a>
       </div>
 
       <!-- Upcoming Rides -->
@@ -45,13 +33,10 @@
         <h3>Upcoming Rides</h3>
 
         <div class="kpi-value-row">
-          <span class="large-number">
-            3
-          </span>
+          <span class="large-number"> 3 </span>
         </div>
 
-        <button class="view-all-btn"
-                onclick="location.href='/my-bookings'">
+        <button class="view-all-btn" onclick="location.href = '/my-bookings'">
           View All
         </button>
       </div>
@@ -61,45 +46,31 @@
         <h3>Next Ride</h3>
 
         <div class="kpi-value-row">
-          <span class="large-number">
-            4:30 PM
-          </span>
+          <span class="large-number"> 4:30 PM </span>
         </div>
 
-        <p>
-          Today - April 25, 2024
-        </p>
+        <p>Today - April 25, 2024</p>
       </div>
 
       <!-- Status -->
       <div class="kpi-card status-card">
-
         <h3>Account Status</h3>
 
         <div class="status-indicator">
+          <div class="status-text">Active</div>
 
-          <div class="status-text">
-            Active
-          </div>
-
-          <p>
-            Ready to Book
-          </p>
-
+          <p>Ready to Book</p>
         </div>
 
         <label class="switch">
           <input type="checkbox" checked />
           <span class="slider round"></span>
         </label>
-
       </div>
-
     </section>
 
     <!-- Map + Quick Actions -->
     <section class="map-actions-section">
-
       <!-- Map -->
       <div class="map-panel">
         <div id="map"></div>
@@ -107,17 +78,14 @@
 
       <!-- Quick Actions -->
       <div class="actions-panel">
-
         <h3>Quick Actions</h3>
 
-        <button class="action-btn"
-                onclick="location.href='/find-ride'">
+        <button class="action-btn" onclick="location.href = '/find-ride'">
           <i class="fas fa-search"></i>
           <span>Find a Ride</span>
         </button>
 
-        <button class="action-btn"
-                onclick="location.href='/my-bookings'">
+        <button class="action-btn" onclick="location.href = '/my-bookings'">
           <i class="fas fa-ticket-alt"></i>
           <span>My Bookings</span>
         </button>
@@ -131,20 +99,15 @@
           <i class="fas fa-headset"></i>
           <span>Contact Support</span>
         </button>
-
       </div>
-
     </section>
 
     <!-- Rides Table -->
     <section class="rides-table-section">
-
       <h3>Your Upcoming Rides</h3>
 
       <div class="rides-table-container">
-
         <table>
-
           <thead>
             <tr>
               <th>Driver</th>
@@ -156,75 +119,44 @@
           </thead>
 
           <tbody>
-
             <tr>
-
               <td class="passenger-cell">
                 <i class="bi bi-person-fill table-avatar"></i>
-                <span>
-                  Rahul Sharma
-                </span>
+                <span> Rahul Sharma </span>
               </td>
+
+              <td>Campus → City Center</td>
+
+              <td>06:00 AM</td>
+
+              <td class="fare-cell">₹150</td>
 
               <td>
-                Campus → City Center
+                <button class="table-btn details">View Details</button>
               </td>
-
-              <td>
-                06:00 AM
-              </td>
-
-              <td class="fare-cell">
-                ₹150
-              </td>
-
-              <td>
-                <button class="table-btn details">
-                  View Details
-                </button>
-              </td>
-
             </tr>
 
             <tr>
-
               <td class="passenger-cell">
                 <i class="bi bi-person-fill table-avatar"></i>
-                <span>
-                  Amit Verma
-                </span>
+                <span> Amit Verma </span>
               </td>
+
+              <td>Office → Home</td>
+
+              <td>05:30 PM</td>
+
+              <td class="fare-cell">₹120</td>
 
               <td>
-                Office → Home
+                <button class="table-btn details">View Details</button>
               </td>
-
-              <td>
-                05:30 PM
-              </td>
-
-              <td class="fare-cell">
-                ₹120
-              </td>
-
-              <td>
-                <button class="table-btn details">
-                  View Details
-                </button>
-              </td>
-
             </tr>
-
           </tbody>
-
         </table>
-
       </div>
-
     </section>
-
   </main>
-
 </div>
 
 <script>

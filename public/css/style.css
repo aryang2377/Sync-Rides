@@ -3,29 +3,15 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+a {
+  color: #fff !important;
+}
 body {
   margin: 0;
   min-height: 100vh;
   background: #020d14;
   overflow-x: hidden;
 }
-.active-link {
-  color: #a5f14f !important;
-  font-size: 18px !important;
-  font-weight: 600 !important;
-}
-
-/* .active-link::after {
-  content: "";
-  /* position: absolute; */
-/* left: 10px;
-  bottom: -6px;
-  width: calc(100% - 10px);
-  height: 2px; */
-/* background: #a5f14f; */
-/* border-radius: 2px; */
-/* } */
 
 .bg {
   position: relative;
@@ -68,8 +54,7 @@ body {
   padding-right: 10px;
 }
 
-a {
-  padding-left: 10px !important;
+.nav-1 {
   color: #ffffff !important;
 }
 
@@ -78,20 +63,21 @@ a {
 }
 
 @media (min-width: 992px) {
-  a {
+  .nav-1 {
     padding-left: 30px !important;
   }
 }
 
 .nav-link {
-  transition: all 0.4s ease-in-out !important;
+  font-size: 18px !important;
+  transition: all 0.45s ease-in-out !important;
 }
 
 .nav-link .active {
   padding-top: 15px !important;
 }
 .nav-link:hover {
-  font-size: 18px;
+  font-size: 19px !important;
   font-weight: 600;
 }
 
@@ -118,16 +104,21 @@ nav ul {
 }
 
 .log {
+  color: white;
   margin-bottom: 10px;
   padding-left: 0 !important;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   transition: all 0.4s ease-in-out;
 }
 
 .log:hover {
-  font-size: 16px;
-  color: rgb(159, 174, 174) !important;
+  font-size: 17px;
+  color: rgb(201, 206, 206) !important;
 }
 .logout-btn {
   background: none;
@@ -141,6 +132,9 @@ nav ul {
   color: #00ff88;
 }
 @media (max-width: 992px) {
+  .nav-1 {
+    padding-left: 10px !important;
+  }
   .profile-log,
   .profile {
     display: none !important;
@@ -256,6 +250,7 @@ nav ul {
 .btn1 {
   padding: 13px 28px;
   /* background: #ffffff; */
+  color: white;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 700;
@@ -271,7 +266,7 @@ nav ul {
 
 .btn2 {
   padding: 13px 28px;
-  /* color: #ffffff; */
+  color: #ffffff;
   border: 1.5px solid rgba(255, 255, 255, 0.5);
   border-radius: 8px;
   /* font-size: 15px; */
@@ -515,4 +510,13 @@ img {
 .invalid-feedback {
   padding-left: 10px;
   text-align: left;
+}
+.logged-in {
+  color: white;
+  padding-left: 9.5px;
+}
+.active-link {
+  color: #a5f14f !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
 }
