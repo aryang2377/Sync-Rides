@@ -184,7 +184,7 @@ app.post("/login", async (req, res, next) => {
 
 // const createReview = async (req, res) => {
 //   try {
-//     const { booking, driver, rating, comment } = req.body;
+//     const { booking, driver, rating, comment } = req.body
 
 //     const review = await Review.create({
 //       booking,
