@@ -1,112 +1,227 @@
 <% layout('/layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/driver_dashboard.css">
 
-<div class="dashboard-container">
-  <main class="main-content">
-    <header class="main-header">
-      <div class="welcome-section">
-        <h2>
-          Welcome Back, <%= user && user.fullname ? user.fullname : 'NewUser' %>
-          !
-          <span class="material-icons header-avatar">account_circle</span>
-        </h2>
-        <p>You have 3 rides scheduled for today</p>
-      </div>
-    </header>
+<div class="driver-dashboard-wrapper">
+    <div class="dashboard-content">
 
-    <section class="kpi-section">
-      <div class="kpi-card">
-        <h3>Current Rating</h3>
-        <div class="kpi-value-row">
-          <span class="star-rating">★ 4.9 ★</span>
-          <div class="mock-sparkline-graph"></div>
+        <!-- HEADER -->
+        <header class="driver-header">
+
+            <div class="driver-welcome">
+                <h1>Driver Control Center</h1>
+
+                <p>
+                    Welcome back,
+                    <span class="gold-text">
+                        <%= user && user.fullname ? user.fullname : 'Driver' %>
+                    </span>
+                </p>
+            </div>
+
+            <div class="header-right">
+
+                <!-- Notification -->
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot"></span>
+                </div>
+
+                <!-- Status Toggle -->
+                <label class="status-toggle">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="status-text">Online</span>
+                </label>
+
+            </div>
+
+        </header>
+
+        <!-- STATS -->
+        <section class="stats-grid">
+
+            <div class="glass-card stat-card">
+                <span class="stat-label">Today's Earnings</span>
+                <span class="stat-value">₹1,240</span>
+            </div>
+
+            <div class="glass-card stat-card">
+                <span class="stat-label">Rating</span>
+                <span class="stat-value gold">4.9 ★</span>
+            </div>
+
+            <div class="glass-card stat-card">
+                <span class="stat-label">Total Rides</span>
+                <span class="stat-value">142</span>
+            </div>
+
+            <div class="glass-card stat-card">
+                <span class="stat-label">Fuel Saved</span>
+                <span class="stat-value green">45L</span>
+            </div>
+
+        </section>
+
+        <!-- MAIN GRID -->
+        <div class="driver-action-grid">
+
+            <!-- REQUESTS -->
+            <section class="glass-card">
+
+                <div class="card-header">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h3>Incoming Rider Requests</h3>
+                </div>
+
+                <p class="card-desc">
+                    Accept scheduled requests from riders nearby.
+                </p>
+
+                <div class="request-container">
+
+                    <div class="request-tile">
+
+                        <div class="request-top">
+                            <strong>Campus ➔ City Center</strong>
+                            <span class="gold-text">₹180</span>
+                        </div>
+
+                        <div class="request-details">
+                            <span>
+                                <i class="fas fa-user"></i>
+                                Aryan K.
+                            </span>
+
+                            <span>
+                                <i class="fas fa-clock"></i>
+                                10 mins away
+                            </span>
+                        </div>
+
+                        <button class="btn-accept">
+                            <i class="fas fa-check"></i>
+                            Accept Request
+                        </button>
+
+                    </div>
+
+                    <div class="request-tile">
+
+                        <div class="request-top">
+                            <strong>Dahmi Kalan ➔ Airport</strong>
+                            <span class="gold-text">₹550</span>
+                        </div>
+
+                        <div class="request-details">
+                            <span>
+                                <i class="fas fa-user"></i>
+                                Ishita P.
+                            </span>
+
+                            <span>
+                                <i class="fas fa-calendar-alt"></i>
+                                Today, 5:00 PM
+                            </span>
+                        </div>
+
+                        <button class="btn-accept">
+                            <i class="fas fa-check"></i>
+                            Accept Request
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- OFFER RIDE -->
+            <section class="glass-card">
+
+                <div class="card-header">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Offer a Ride</h3>
+                </div>
+
+                <p class="card-desc">
+                    Going somewhere? Post your trip for others to join.
+                </p>
+
+                <form action="/create-trip" method="POST">
+
+                    <div class="form-field">
+                        <label>Your Route</label>
+                        <input
+                            type="text"
+                            name="route"
+                            placeholder="e.g. Jaipur to Delhi"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label>Available Seats</label>
+                        <input
+                            type="number"
+                            name="seats"
+                            min="1"
+                            max="6"
+                            placeholder="3"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label>Departure Date & Time</label>
+                        <input
+                            type="datetime-local"
+                            name="departure"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label>Trip Category</label>
+
+                        <select
+                            class="dark-select"
+                            name="category"
+                        >
+                            <option value="local">
+                                Local City Ride
+                            </option>
+
+                            <option value="outstation">
+                                Outstation Journey
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn-gold-full"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                        Post Trip Offer
+                    </button>
+
+                </form>
+
+            </section>
+
         </div>
-      </div>
 
-      <div class="kpi-card">
-        <h3>Total Earnings (This Month)</h3>
-        <div class="kpi-value-row">
-          <span class="currency-symbol">$</span>
-          <span class="large-number">1,250.00</span>
+        <!-- MAP -->
+        <div class="map-wrapper glass-card">
+            <div id="map"></div>
         </div>
-        <a href="#" class="details-link">View Details ></a>
-      </div>
 
-      <div class="kpi-card">
-        <h3>Upcoming Carpools</h3>
-        <div class="kpi-value-row">
-          <span class="large-number">3</span>
-        </div>
-        <button class="view-all-btn">View All</button>
-      </div>
-
-      <div class="kpi-card status-card online">
-        <h3>Active Status</h3>
-        <div class="status-indicator">
-          <div class="status-text">Online</div>
-          <p>Ready to Match</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" checked />
-          <span class="slider round"></span>
-        </label>
-      </div>
-    </section>
-
-    <section class="map-actions-section">
-      <div class="map-panel">
-        <div id="map"></div>
-      </div>
-
-      <div class="actions-panel">
-        <h3>Quick Actions</h3>
-        <button class="action-btn offer-btn">
-          <i class="fas fa-bell"></i>
-          <span>Offers Received</span>
-          <span class="badge">5</span>
-        </button>
-        <button class="action-btn">
-          <i class="fas fa-calendar-alt"></i> <span>Edit Schedule</span>
-        </button>
-        <button class="action-btn">
-          <i class="fas fa-headset"></i> <span>Contact Support</span>
-        </button>
-      </div>
-    </section>
-
-    <section class="rides-table-section">
-      <h3>Active & Upcoming Rides</h3>
-      <div class="rides-table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Passenger Name</th>
-              <th>Route</th>
-              <th>Pickup Time</th>
-              <th>Fare</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="passenger-cell">
-                <i class="bi bi-person-fill table-avatar"></i>
-                <span>Alex Smith</span>
-              </td>
-              <td>Start - End: Brasinar</td>
-              <td>06:00 AM</td>
-              <td class="fare-cell">$150</td>
-              <td>
-                <button class="table-btn details">View Details</button>
-                <button class="table-btn accept">Accept Offer</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+    </div>
 </div>
+
 <script>
-  window.mapToken = "<%= mapToken || '' %>";
+window.mapToken = "<%= mapToken || '' %>";
 </script>
+
 <script src="/js/map.js"></script>
