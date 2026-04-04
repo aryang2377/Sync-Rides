@@ -1,107 +1,150 @@
 <% layout('/layouts/boilerplate.ejs') %>
-<link rel="stylesheet" href="/css/rider_dashboard.css">
+<link rel="stylesheet" href="/css/rider_dashboard.css" />
+<!-- Flatpickr CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://npmcdn.com/flatpickr/dist/themes/dark.css"
+/>
 
 <div class="rider-dashboard-container">
-    <div class="dashboard-wrapper">
-        
-        <header class="dashboard-header">
-            <div class="welcome-msg">
-                <h1>Welcome Back, <%= user && user.fullname ? user.fullname : 'ara' %>!</h1>
-                <!-- <p>You have <span class="accent-gold">2 rides</span> scheduled for today</p> -->
-            </div>
-            <div class="live-indicator">
-                <span class="dot"></span> Live Refreshing
-            </div>
-        </header>
+  <div class="dashboard-wrapper">
+    <header class="dashboard-header">
+      <div class="welcome-msg">
+        <h1>
+          Welcome Back, <%= user && user.fullname ? user.fullname : 'ara' %>!
+        </h1>
+        <!-- <p>You have <span class="accent-gold">2 rides</span> scheduled for today</p> -->
+      </div>
+      <div class="live-indicator">
+        <span class="dot"></span> Live Refreshing
+      </div>
+    </header>
 
-        <section class="kpi-grid">
-            <div class="glass-card kpi-card">
-                <span class="kpi-label">Total Trips</span>
-                <span class="large-number">18</span>
-                <a href="/history" class="kpi-link">View History ></a>
-            </div>
-            <div class="glass-card kpi-card">
-                <span class="kpi-label">Upcoming</span>
-                <span class="large-number">3</span>
-                <button class="kpi-btn" onclick="location.href = '/my-bookings'">View All</button>
-            </div>
-            <div class="glass-card kpi-card">
-                <span class="kpi-label">Next Ride</span>
-                <span class="large-number">4:30 PM</span>
-                <p class="sub-text">Today - April 25</p>
-            </div>
-            
-            <div class="glass-card kpi-card eco-card">
-                <span class="kpi-label">Eco Impact</span>
-                <span class="large-number" style="color: #00ff88;">12.4 kg</span>
-                <p class="sub-text">CO₂ Emissions Saved 🌿</p>
-            </div>
-        </section>
+    <section class="kpi-grid">
+      <div class="glass-card kpi-card">
+        <span class="kpi-label">Total Trips</span>
+        <span class="large-number">18</span>
+        <a href="/history" class="kpi-link">View History ></a>
+      </div>
+      <div class="glass-card kpi-card">
+        <span class="kpi-label">Upcoming</span>
+        <span class="large-number">3</span>
+        <button class="kpi-btn" onclick="location.href = '/my-bookings'">
+          View All
+        </button>
+      </div>
+      <div class="glass-card kpi-card">
+        <span class="kpi-label">Next Ride</span>
+        <span class="large-number">4:30 PM</span>
+        <p class="sub-text">Today - April 25</p>
+      </div>
 
-        <div class="action-grid">
-            <section class="glass-card">
-                <h3><i class="fas fa-calendar-plus"></i> Schedule Your Trip</h3>
-                <form action="/post-request" method="POST" class="dashboard-form">
-                    <div class="form-group">
-                        <label>Pickup Location</label>
-                        <input type="text" placeholder="e.g., Downtown Metro" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Drop-off Destination</label>
-                        <input type="text" placeholder="e.g., Office Park, North" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Date & Time</label>
-                        <input type="datetime-local" required>
-                    </div>
-                    <button type="submit" class="btn-primary-gold">Post Ride Request</button>
-                </form>
-            </section>
+      <div class="glass-card kpi-card eco-card">
+        <span class="kpi-label">Eco Impact</span>
+        <span class="large-number" style="color: #00ff88">12.4 kg</span>
+        <p class="sub-text">CO₂ Emissions Saved 🌿</p>
+      </div>
+    </section>
 
-            <section class="glass-card">
-                <h3><i class="fas fa-users"></i> Nearby Peer Rides</h3>
-                <div class="ride-feed">
-                    <div class="ride-card">
-                        <div class="ride-info">
-                            <strong>Rahul G.</strong>
-                            <span>to City Center | 08:35 AM</span>
-                            <span class="seats-left">● 2 Seats Left</span>
-                        </div>
-                        <button class="btn-join-outline">JOIN RIDE</button>
-                    </div>
-                    <div class="ride-card active-border">
-                        <div class="ride-info">
-                            <strong>Sneha K.</strong>
-                            <span>to Tech Park | 08:42 AM</span>
-                            <span class="seats-left">● 1 Seat Left</span>
-                        </div>
-                        <button class="btn-joined-solid">JOINED</button>
-                    </div>
-                </div>
-            </section>
+    <div class="action-grid">
+      <section class="glass-card">
+        <h3><i class="fas fa-calendar-plus"></i> Schedule Your Trip</h3>
+        <form action="/post-request" method="POST" class="dashboard-form">
+          <div class="form-group">
+            <label>Pickup Location</label>
+            <input type="text" placeholder="e.g., Downtown Metro" required />
+          </div>
+          <div class="form-group">
+            <label>Drop-off Destination</label>
+            <input
+              type="text"
+              placeholder="e.g., Office Park, North"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Departure Date & Time</label>
+            <input
+              type="text"
+              class="form-control mt-3 pb-2"
+              id="departureDate"
+              name="departure"
+              placeholder="Select date and time"
+              required
+            />
+          </div>
+          <br />
+          <button type="submit" class="btn-primary-gold">
+            Post Ride Request
+          </button>
+        </form>
+      </section>
+
+      <section class="glass-card">
+        <h3><i class="fas fa-users"></i> Nearby Peer Rides</h3>
+        <div class="ride-feed">
+          <div class="ride-card">
+            <div class="ride-info">
+              <strong>Rahul G.</strong>
+              <span>to City Center | 08:35 AM</span>
+              <span class="seats-left">● 2 Seats Left</span>
+            </div>
+            <button class="btn-join-outline">JOIN RIDE</button>
+          </div>
+          <div class="ride-card active-border">
+            <div class="ride-info">
+              <strong>Sneha K.</strong>
+              <span>to Tech Park | 08:42 AM</span>
+              <span class="seats-left">● 1 Seat Left</span>
+            </div>
+            <button class="btn-joined-solid">JOINED</button>
+          </div>
         </div>
-
-        <div class="map-container glass-card">
-            <div id="map"></div>
-        </div>
-
-        <section class="outstation-container">
-            <h3 class="section-title"><i class="fas fa-road"></i> Outstation Journeys</h3>
-            <div class="glass-card outstation-item">
-                <div class="out-info">
-                    <strong>Jaipur ↔ Udaipur</strong>
-                    <p>Amit V. | Tomorrow, 6:00 AM</p>
-                </div>
-                <div class="out-action">
-                    <span class="price-tag">₹850</span>
-                    <button class="btn-view" onclick="location.href='/outstation'">VIEW DETAILS</button>
-                </div>
-            </div>
-        </section>
+      </section>
     </div>
+
+    <div class="map-container glass-card">
+      <div id="map"></div>
+    </div>
+
+    <section class="outstation-container">
+      <h3 class="section-title">
+        <i class="fas fa-road"></i> Outstation Journeys
+      </h3>
+      <div class="glass-card outstation-item">
+        <div class="out-info">
+          <strong>Jaipur ↔ Udaipur</strong>
+          <p>Amit V. | Tomorrow, 6:00 AM</p>
+        </div>
+        <div class="out-action">
+          <span class="price-tag">₹850</span>
+          <button class="btn-view" onclick="location.href = '/outstation'">
+            VIEW DETAILS
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 
 <script>
-    window.mapToken = "<%= mapToken || '' %>";
+  window.mapToken = "<%= mapToken || '' %>";
 </script>
 <script src="/js/map.js"></script>
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  // Initialize Flatpickr on the date input
+  flatpickr("#departureDate", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    minDate: "today",
+    time_24hr: true,
+    placeholder: "Select date and time",
+  });
+</script>
