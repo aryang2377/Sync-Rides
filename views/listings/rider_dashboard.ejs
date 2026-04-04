@@ -15,9 +15,12 @@
   <div class="dashboard-wrapper">
     <header class="dashboard-header">
       <div class="welcome-msg">
-        <h1>
-          Welcome Back, <%= user && user.fullname ? user.fullname : 'ara' %>!
-        </h1>
+        <h2>
+          Welcome Back,
+          <span class="gold-text">
+            <%= user && user.fullname ? user.fullname : 'Rider' %>
+          </span>
+        </h2>
         <!-- <p>You have <span class="accent-gold">2 rides</span> scheduled for today</p> -->
       </div>
       <div class="live-indicator">
