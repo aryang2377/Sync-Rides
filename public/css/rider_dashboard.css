@@ -238,6 +238,18 @@
   font-weight: bold;
 }
 
+/* No rides message */
+.no-rides {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+}
+
+.no-rides p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
 /* Responsive */
 @media (max-width: 1000px) {
   .kpi-grid {
