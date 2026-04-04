@@ -11,6 +11,11 @@ const bookingSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  driver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   seats_booked: {
     type: Number,
     required: true,
