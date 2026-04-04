@@ -4,10 +4,10 @@ import bcrypt from "bcrypt";
 import method from "method-override";
 import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
-import Rating from "./models/rating.model.js";
+// import Rating from "/models/rating.js";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-import User from "./models/user.model.js";
+import User from "./models/user.js";
 import connectDB from "./db/sample.js";
 
 import { fileURLToPath } from "url";
@@ -143,6 +143,9 @@ app.get("/about", (req, res) => {
 // app.listen(3000, () => {
 //   console.log("Server is running on http://localhost:3000");
 // });
+app.get("/my-bookings",(req,res)=>{
+  res.render("listings/booking");
+});
 
 app.post("/login", async (req, res, next) => {
   try {
@@ -218,11 +221,16 @@ app.use((err, req, res, next) => {
 });
 
 connectDB()
-  .then(() => {
-    app.listen(process.env.PORT || 3000, () => {
-      console.log(`Server is running at http://localhost:3000`);
-    });
-  })
-  .catch((err) => {
-    console.log("MONGO DB connection failed", err);
+.then(() => {
+
+  app.listen(process.env.PORT || 3000, () => {
+    console.log("Server is running on port 3000");
   });
+
+})
+.catch((err) => {
+
+  console.log("Database connection failed");
+  console.error(err);
+
+});

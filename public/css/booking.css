@@ -1,0 +1,487 @@
+/* PAGE */
+
+.booking-page-container {
+
+    padding: 28px;
+
+    max-width: 1400px;
+
+    margin: auto;
+
+}
+
+
+
+/* HEADER */
+
+.page-header {
+
+    text-align: center;
+
+    margin-bottom: 24px;
+
+}
+
+.page-header h1 {
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+    margin-bottom: 6px;
+
+}
+
+.page-header p {
+
+    font-size: 14px;
+
+    color: #9fbcbc;
+
+}
+
+
+
+/* MAIN LAYOUT */
+
+.booking-layout {
+
+    display: grid;
+
+    grid-template-columns: 3fr 1fr;
+
+    gap: 24px;
+
+}
+
+
+
+/* LEFT SIDE */
+
+.bookings-main {
+
+    height: 72vh;
+
+}
+
+
+
+/* SCROLL AREA */
+
+.bookings-scroll {
+
+    height: 100%;
+
+    overflow-y: auto;
+
+    padding-right: 8px;
+
+}
+
+
+
+/* SCROLLBAR */
+
+.bookings-scroll::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+.bookings-scroll::-webkit-scrollbar-thumb {
+
+    background: #1abc9c;
+
+    border-radius: 10px;
+
+}
+
+
+
+/* BOOKING CARD */
+
+.booking-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 18px 22px;
+
+    border-radius: 14px;
+
+    margin-bottom: 16px;
+
+    background: #0e2a2a;
+
+    border: 1px solid rgba(255,255,255,0.06);
+
+    transition: 0.2s;
+
+}
+
+.booking-card:hover {
+
+    transform: translateY(-2px);
+
+    border-color: rgba(26,188,156,0.5);
+
+}
+
+
+
+/* LOCATION ICON */
+
+.location-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 16px;
+
+}
+
+.green { background: #2ecc71; }
+
+.blue { background: #3498db; }
+
+.red { background: #e74c3c; }
+
+
+
+/* ROUTE */
+
+.route-section {
+
+    min-width: 200px;
+
+}
+
+.route-section h3 {
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    margin-bottom: 2px;
+
+}
+
+.route-section p {
+
+    font-size: 13px;
+
+    color: #c6e2e2;
+
+}
+
+
+
+/* META */
+
+.meta-row {
+
+    display: flex;
+
+    gap: 16px;
+
+    margin-top: 6px;
+
+    font-size: 12px;
+
+    color: #b7d3d3;
+
+}
+
+
+
+/* DRIVER */
+
+.driver-section {
+
+    min-width: 220px;
+
+}
+
+.driver-section h4 {
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    margin-bottom: 2px;
+
+}
+
+.driver-section p {
+
+    font-size: 12px;
+
+    color: #bcd6d6;
+
+    margin: 2px 0;
+
+}
+
+.rating {
+
+    color: gold;
+
+    margin-left: 6px;
+
+}
+
+
+
+/* FARE */
+
+.fare-section {
+
+    margin-left: auto;
+
+    text-align: center;
+
+}
+
+.fare-section h2 {
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    margin: 0;
+
+}
+
+.fare-section span {
+
+    font-size: 12px;
+
+    color: #9fbcbc;
+
+}
+
+
+
+/* ACTIONS */
+
+.action-section {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+
+/* STATUS */
+
+.status {
+
+    padding: 5px 12px;
+
+    border-radius: 18px;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    text-align: center;
+
+}
+
+.status.upcoming {
+
+    background: #2ecc71;
+
+}
+
+.status.completed {
+
+    background: #3498db;
+
+}
+
+.status.cancelled {
+
+    background: #e74c3c;
+
+}
+
+
+
+/* BUTTONS */
+
+.btn-view {
+
+    padding: 7px 14px;
+
+    background: #1abc9c;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+.btn-view:hover {
+
+    background: #16a085;
+
+}
+
+
+
+.btn-cancel {
+
+    padding: 7px 14px;
+
+    background: #e74c3c;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+.btn-cancel:hover {
+
+    background: #c0392b;
+
+}
+
+
+
+/* SIDEBAR */
+
+.booking-sidebar {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+
+
+/* SIDEBAR CARD */
+
+.sidebar-card {
+
+    background: #0e2a2a;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    border: 1px solid rgba(255,255,255,0.06);
+
+}
+
+
+
+/* SIDEBAR TITLE */
+
+.sidebar-card h3 {
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+/* SUMMARY */
+
+.summary-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin: 6px 0;
+
+    font-size: 14px;
+
+}
+
+
+
+/* FIND RIDE BUTTON */
+
+.btn-find-ride {
+
+    display: inline-block;
+
+    margin-top: 12px;
+
+    padding: 9px 14px;
+
+    background: #7bed9f;
+
+    color: black;
+
+    text-decoration: none;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+
+}
+
+.btn-find-ride:hover {
+
+    background: #58d68d;
+
+}
+
+
+
+/* HELP TEXT */
+
+.sidebar-card p {
+
+    font-size: 14px;
+
+    margin: 6px 0;
+
+}
