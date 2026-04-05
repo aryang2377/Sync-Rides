@@ -2,21 +2,14 @@
 
 <link rel="stylesheet" href="/css/rider_dashboard.css" />
 
-<!-- Flatpickr CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-/>
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="https://npmcdn.com/flatpickr/dist/themes/dark.css"
-/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css" />
 
 <div class="rider-dashboard-container">
   <div class="dashboard-wrapper">
 
-    <!-- Header -->
+    <!-- HEADER -->
+
     <header class="dashboard-header">
       <div class="welcome-msg">
         <h2>
@@ -36,78 +29,51 @@
 
     <section class="kpi-grid">
 
-      <!-- Total Trips -->
-
       <div class="glass-card kpi-card">
         <span class="kpi-label">Total Trips</span>
-
         <span class="large-number">
           <%= totalTrips || 0 %>
         </span>
-
-        <a href="/history" class="kpi-link">
-          View History >
-        </a>
+        <button class="kpi-btn" onclick="location.href='/my-bookings'">
+          View Bookings
+        </button>
       </div>
-
-      <!-- Upcoming Trips -->
 
       <div class="glass-card kpi-card">
         <span class="kpi-label">Upcoming</span>
-
         <span class="large-number">
-          <%= upcomingTrips || 0 %>4
+          <%= upcomingTrips || 0 %>
         </span>
-
-        <button
-          class="kpi-btn"
-          onclick="location.href='/my-bookings'"
-        >
+        <button class="kpi-btn" onclick="location.href='/my-bookings'">
           View All
         </button>
       </div>
 
-      <!-- Next Ride -->
-
       <div class="glass-card kpi-card">
         <span class="kpi-label">Next Ride</span>
-
         <span class="large-number">
           <%= nextRide
-              ? new Date(nextRide.time).toLocaleTimeString()
+              ? new Date(nextRide.time).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
               : "None"
           %>
         </span>
-
         <p class="sub-text">
-
           <%= nextRide
               ? new Date(nextRide.time).toDateString()
               : "No upcoming ride"
           %>
-
         </p>
       </div>
 
-      <!-- Eco Impact -->
-
       <div class="glass-card kpi-card eco-card">
-
-        <span class="kpi-label">
-          Eco Impact
-        </span>
-
-        <span
-          class="large-number"
-          style="color:#00ff88"
-        >
+        <span class="kpi-label">Eco Impact</span>
+        <span class="large-number" style="color:#00ff88">
           12.4 kg
         </span>
-
-        <p class="sub-text">
-          CO₂ Emissions Saved 🌿
-        </p>
-
+        <p class="sub-text">CO₂ Emissions Saved 🌿</p>
       </div>
 
     </section>
@@ -125,48 +91,30 @@
           Schedule Your Trip
         </h3>
 
-        <form
-          action="/trips"
-          method="POST"
-          class="dashboard-form"
-        >
+        <form action="/trips" method="POST" class="dashboard-form">
 
           <div class="form-group">
-
-            <label>
-              Pickup Location
-            </label>
-
+            <label>Pickup Location</label>
             <input
               type="text"
               name="pickup"
-              placeholder="e.g., Downtown Metro"
+              placeholder="e.g., Delhi Metro Station"
               required
             />
-
           </div>
 
           <div class="form-group">
-
-            <label>
-              Drop-off Destination
-            </label>
-
+            <label>Drop-off Destination</label>
             <input
               type="text"
               name="destination"
-              placeholder="e.g., Office Park"
+              placeholder="e.g., Office"
               required
             />
-
           </div>
 
           <div class="form-group">
-
-            <label>
-              Departure Date & Time
-            </label>
-
+            <label>Departure Date & Time</label>
             <input
               type="text"
               id="departureDate"
@@ -174,13 +122,9 @@
               placeholder="Select date and time"
               required
             />
-
           </div>
 
-          <button
-            type="submit"
-            class="btn-primary-gold"
-          >
+          <button type="submit" class="btn-primary-gold">
             Post Ride Request
           </button>
 
@@ -194,31 +138,69 @@
 
         <h3>
           <i class="fas fa-users"></i>
-          Nearby Peer Rides
+          Available Rides
         </h3>
 
         <div class="ride-feed">
-          <% if (availableRides && availableRides.length > 0) { %>
-            <% availableRides.forEach(ride => { %>
+
+          <% if (!trips || trips.length === 0) { %>
+
+            <p style="text-align:center; opacity:0.7;">
+              No rides available yet
+            </p>
+
+          <% } %>
+
+          <% if (trips && trips.length > 0) { %>
+
+            <% trips.forEach(trip => { %>
+
               <div class="ride-card">
+
                 <div class="ride-info">
-                  <strong><%= ride.driver.fullname %></strong>
-                  <span><%= ride.origin.address.toUpperCase() %> to <%= ride.destination.address.toUpperCase() %> | <%= new Date(ride.departure_time).toLocaleString('en-IN', {  dateStyle: 'medium', timeStyle: 'short' }) %></span>
-                  <span class="seats-left">● <%= ride.available_seats %> Seats Left</span>
+
+                  <strong>
+                    <%= trip.driver && trip.driver.fullname
+                        ? trip.driver.fullname
+                        : 'Driver'
+                    %>
+                  </strong>
+
+                  <span>
+                    <%= trip.pickup %>
+                    →
+                    <%= trip.destination %>
+                  </span>
+
+                  <span>
+                    <%= new Date(trip.time)
+                          .toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
+                    %>
+                  </span>
+
+                  <span class="seats-left">
+                    ● <%= trip.seats %> Seats Left
+                  </span>
+
                 </div>
-                <% if (ride.isBookedByUser) { %>
-                  <button class="btn-joined-solid" disabled>JOINED</button>
-                <% } else { %>
-                  <button class="btn btn-outline-success" onclick="joinRide('<%= ride._id %>')">JOIN RIDE</button>
-                <% } %>
+
+                <form action="/join/<%= trip._id %>" method="POST">
+
+                  <button class="btn-join-outline">
+                    JOIN RIDE
+                  </button>
+
+                </form>
+
               </div>
-            <% }); %>
-          <% } else { %>
-            <div class="no-rides">
-              <p>No rides available right now. Check back later!</p>
-            </div>
-            <button class="btn-joined-solid">JOINED</button>
-          </div>
+
+            <% }) %>
+
+          <% } %>
+
         </div>
 
       </section>
@@ -234,37 +216,19 @@
   </div>
 </div>
 
-<!-- MAP TOKEN -->
-
 <script>
-
-  window.mapToken =
-    "<%= mapToken || '' %>";
-
+  window.mapToken = "<%= mapToken || '' %>";
 </script>
 
 <script src="/js/map.js"></script>
 
-<!-- Flatpickr -->
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
-  // Initialize Flatpickr on the date input
   flatpickr("#departureDate", {
     enableTime: true,
     dateFormat: "Y-m-d H:i",
     minDate: "today",
-    time_24hr: true,
-    placeholder: "Select date and time",
+    time_24hr: true
   });
-
-  async function joinRide(rideId) {
-  if (!confirm("Do you really want to join this ride?")) return;
-
-  await fetch(`/join-ride/${rideId}`, {
-    method: "POST"
-  });
-  location.reload();
-}
 </script>
