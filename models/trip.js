@@ -38,7 +38,7 @@ const tripSchema = new mongoose.Schema({
     passengers: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "user"
+            ref: "User"
         }
     ]
 

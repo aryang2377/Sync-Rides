@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import method from "method-override";
 import ejsMate from "ejs-mate";
 import dotenv from "dotenv";
-// import Rating from "/models/rating.js";
+import Trip from "./models/trip.js";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import User from "./models/user.js";
@@ -66,6 +66,41 @@ app.get("/dashboard", async (req, res) => {
     return res.redirect("/login");
   }
 
+  const userId = res.locals.user._id;
+
+  let trips = [];
+
+  trips = await Trip.find({
+    driver: { $ne: userId },
+  }).populate("driver");
+
+  const createdTrips = await Trip.countDocuments({
+    driver: userId,
+  });
+
+  const joinedTrips = await Trip.countDocuments({
+    passengers: userId,
+  });
+
+  const totalTrips = createdTrips + joinedTrips;
+  const upcomingTrips = await Trip.countDocuments({
+    passengers: userId,
+
+    time: {
+      $gte: new Date(),
+    },
+  });
+
+  const nextRide = await Trip.findOne({
+    passengers: userId,
+
+    time: {
+      $gte: new Date(),
+    },
+  }).sort({
+    time: 1,
+  });
+
   if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
@@ -112,6 +147,10 @@ app.get("/dashboard", async (req, res) => {
       // });
 
       return res.render("listings/rider_dashboard", {
+        trips,
+        totalTrips,
+        upcomingTrips,
+        nextRide,
         mapToken: process.env.MAP_TOKEN || "",
         availableRides: ridesWithStatus,
       });
@@ -119,6 +158,10 @@ app.get("/dashboard", async (req, res) => {
       console.error("Error fetching rides:", error);
 
       return res.render("listings/rider_dashboard", {
+        trips,
+        totalTrips,
+        upcomingTrips,
+        nextRide,
         mapToken: process.env.MAP_TOKEN || "",
         availableRides: [],
       });
@@ -226,7 +269,34 @@ app.get("/bookings", requireAuth, async (req, res, next) => {
         cancelled: bookings.filter((b) => b.status === "cancelled").length,
       };
 
-      res.render("listings/rider_booking", { bookings, summary });
+      const userId = res.locals.user._id;
+
+      const trips = await Trip.find({
+        $or: [{ driver: userId }, { passengers: userId }],
+      })
+        .populate("driver")
+        .sort({ time: 1 });
+      const now = new Date();
+
+      const scheduledTrips = [];
+      const completedTrips = [];
+      const cancelledTrips = [];
+
+      trips.forEach((trip) => {
+        if (trip.status === "cancelled") {
+          cancelledTrips.push(trip);
+        } else if (trip.time < now) {
+          completedTrips.push(trip);
+        } else {
+          scheduledTrips.push(trip);
+        }
+      });
+
+      res.render("listings/rider_booking", {
+        scheduledTrips,
+        completedTrips,
+        cancelledTrips,
+      });
     }
   } catch (err) {
     next(err);
@@ -413,13 +483,13 @@ app.post("/create-trip", async (req, res, next) => {
   try {
     const { route, seats, departure, category } = req.body;
 
-    console.log("Create trip request:", {
-      route,
-      seats,
-      departure,
-      category,
-      driver: res.locals.user._id,
-    });
+    // console.log("Create trip request:", {
+    //   route,
+    //   seats,
+    //   departure,
+    //   category,
+    //   driver: res.locals.user._id,
+    // });
 
     // Parse the route (e.g., "Jaipur to Delhi" -> from: "Jaipur", to: "Delhi")
     const routeParts = route.toLowerCase().split(" to ");
@@ -611,6 +681,26 @@ app.post("/join-ride/:rideId", async (req, res, next) => {
     console.error("Error joining ride:", err);
     next(err);
   }
+});
+
+app.post("/trips", async (req, res) => {
+  if (!res.locals.user) {
+    return res.redirect("/login");
+  }
+  const { pickup, destination, time } = req.body;
+
+  const newTrip = new Trip({
+    driver: res.locals.user._id,
+
+    pickup,
+    destination,
+    time: new Date(time),
+    seats: res.locals.user.seats || 1,
+  });
+
+  await newTrip.save();
+
+  res.redirect("/dashboard");
 });
 
 app.post("/logout", (req, res) => {
