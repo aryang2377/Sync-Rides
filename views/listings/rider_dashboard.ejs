@@ -1,15 +1,18 @@
 <% layout('/layouts/boilerplate.ejs') %>
-
 <link rel="stylesheet" href="/css/rider_dashboard.css" />
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css" />
+<!-- Flatpickr CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://npmcdn.com/flatpickr/dist/themes/dark.css"
+/>
 
 <div class="rider-dashboard-container">
   <div class="dashboard-wrapper">
-
-    <!-- HEADER -->
-
     <header class="dashboard-header">
       <div class="welcome-msg">
         <h2>
@@ -18,217 +21,146 @@
             <%= user && user.fullname ? user.fullname : 'Rider' %>
           </span>
         </h2>
+        <!-- <p>You have <span class="accent-gold">2 rides</span> scheduled for today</p> -->
       </div>
-
       <div class="live-indicator">
         <span class="dot"></span> Live Refreshing
       </div>
     </header>
 
-    <!-- KPI SECTION -->
-
     <section class="kpi-grid">
-
       <div class="glass-card kpi-card">
         <span class="kpi-label">Total Trips</span>
-        <span class="large-number">
-          <%= totalTrips || 0 %>
-        </span>
-        <button class="kpi-btn" onclick="location.href='/my-bookings'">
-          View Bookings
-        </button>
+        <span class="large-number">18</span>
+        <a href="/history" class="kpi-link">View History ></a>
       </div>
-
       <div class="glass-card kpi-card">
         <span class="kpi-label">Upcoming</span>
-        <span class="large-number">
-          <%= upcomingTrips || 0 %>
-        </span>
-        <button class="kpi-btn" onclick="location.href='/my-bookings'">
+        <span class="large-number">3</span>
+        <button class="kpi-btn" onclick="location.href = '/my-bookings'">
           View All
         </button>
       </div>
-
       <div class="glass-card kpi-card">
         <span class="kpi-label">Next Ride</span>
-        <span class="large-number">
-          <%= nextRide
-              ? new Date(nextRide.time).toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })
-              : "None"
-          %>
-        </span>
-        <p class="sub-text">
-          <%= nextRide
-              ? new Date(nextRide.time).toDateString()
-              : "No upcoming ride"
-          %>
-        </p>
+        <span class="large-number">4:30 PM</span>
+        <p class="sub-text">Today - April 25</p>
       </div>
 
       <div class="glass-card kpi-card eco-card">
         <span class="kpi-label">Eco Impact</span>
-        <span class="large-number" style="color:#00ff88">
-          12.4 kg
-        </span>
+        <span class="large-number" style="color: #00ff88">12.4 kg</span>
         <p class="sub-text">CO₂ Emissions Saved 🌿</p>
       </div>
-
     </section>
 
-    <!-- ACTION GRID -->
-
     <div class="action-grid">
-
-      <!-- Schedule Trip -->
-
       <section class="glass-card">
-
-        <h3>
-          <i class="fas fa-calendar-plus"></i>
-          Schedule Your Trip
-        </h3>
-
-        <form action="/trips" method="POST" class="dashboard-form">
-
+        <h3><i class="fas fa-calendar-plus"></i> Schedule Your Trip</h3>
+        <form action="/post-request" method="POST" class="dashboard-form">
           <div class="form-group">
             <label>Pickup Location</label>
-            <input
-              type="text"
-              name="pickup"
-              placeholder="e.g., Delhi Metro Station"
-              required
-            />
+            <input type="text" placeholder="e.g., Downtown Metro" required />
           </div>
-
           <div class="form-group">
             <label>Drop-off Destination</label>
             <input
               type="text"
-              name="destination"
-              placeholder="e.g., Office"
+              placeholder="e.g., Office Park, North"
               required
             />
           </div>
-
           <div class="form-group">
             <label>Departure Date & Time</label>
             <input
               type="text"
+              class="form-control mt-3 pb-2"
               id="departureDate"
-              name="time"
+              name="departure"
               placeholder="Select date and time"
               required
             />
           </div>
-
+          <br />
           <button type="submit" class="btn-primary-gold">
             Post Ride Request
           </button>
-
         </form>
-
       </section>
-
-      <!-- Nearby Peer Rides -->
 
       <section class="glass-card">
-
-        <h3>
-          <i class="fas fa-users"></i>
-          Available Rides
-        </h3>
-
+        <h3><i class="fas fa-users"></i> Nearby Peer Rides</h3>
         <div class="ride-feed">
-
-          <% if (!trips || trips.length === 0) { %>
-
-            <p style="text-align:center; opacity:0.7;">
-              No rides available yet
-            </p>
-
-          <% } %>
-
-          <% if (trips && trips.length > 0) { %>
-
-            <% trips.forEach(trip => { %>
-
+          <% if (availableRides && availableRides.length > 0) { %>
+            <% availableRides.forEach(ride => { %>
               <div class="ride-card">
-
                 <div class="ride-info">
-
-                  <strong>
-                    <%= trip.driver && trip.driver.fullname
-                        ? trip.driver.fullname
-                        : 'Driver'
-                    %>
-                  </strong>
-
-                  <span>
-                    <%= trip.pickup %>
-                    →
-                    <%= trip.destination %>
-                  </span>
-
-                  <span>
-                    <%= new Date(trip.time)
-                          .toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })
-                    %>
-                  </span>
-
-                  <span class="seats-left">
-                    ● <%= trip.seats %> Seats Left
-                  </span>
-
+                  <strong><%= ride.driver.fullname %></strong>
+                  <span><%= ride.origin.address.toUpperCase() %> to <%= ride.destination.address.toUpperCase() %> | <%= new Date(ride.departure_time).toLocaleString('en-IN', {  dateStyle: 'medium', timeStyle: 'short' }) %></span>
+                  <span class="seats-left">● <%= ride.available_seats %> Seats Left</span>
                 </div>
-
-                <form action="/join/<%= trip._id %>" method="POST">
-
-                  <button class="btn-join-outline">
-                    JOIN RIDE
-                  </button>
-
-                </form>
-
+                <% if (ride.isBookedByUser) { %>
+                  <button class="btn-joined-solid" disabled>JOINED</button>
+                <% } else { %>
+                  <button class="btn btn-outline-success" onclick="joinRide('<%= ride._id %>')">JOIN RIDE</button>
+                <% } %>
               </div>
-
-            <% }) %>
-
+            <% }); %>
+          <% } else { %>
+            <div class="no-rides">
+              <p>No rides available right now. Check back later!</p>
+            </div>
           <% } %>
-
         </div>
-
       </section>
-
     </div>
-
-    <!-- MAP -->
 
     <div class="map-container glass-card">
       <div id="map"></div>
     </div>
 
+    <section class="outstation-container">
+      <h3 class="section-title">
+        <i class="fas fa-road"></i> Outstation Journeys
+      </h3>
+      <div class="glass-card outstation-item">
+        <div class="out-info">
+          <strong>Jaipur ↔ Udaipur</strong>
+          <p>Amit V. | Tomorrow, 6:00 AM</p>
+        </div>
+        <div class="out-action">
+          <span class="price-tag">₹850</span>
+          <button class="btn-view" onclick="location.href = '/outstation'">
+            VIEW DETAILS
+          </button>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 
 <script>
   window.mapToken = "<%= mapToken || '' %>";
 </script>
-
 <script src="/js/map.js"></script>
-
+<!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 <script>
+  // Initialize Flatpickr on the date input
   flatpickr("#departureDate", {
     enableTime: true,
     dateFormat: "Y-m-d H:i",
     minDate: "today",
-    time_24hr: true
+    time_24hr: true,
+    placeholder: "Select date and time",
   });
+
+  async function joinRide(rideId) {
+  if (!confirm("Do you really want to join this ride?")) return;
+
+  await fetch(`/join-ride/${rideId}`, {
+    method: "POST"
+  });
+  location.reload();
+}
 </script>
