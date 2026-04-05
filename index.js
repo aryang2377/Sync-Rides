@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import User from "./models/user.js";
+import Trip from "./models/trip.js";
 import connectDB from "./db/sample.js";
 
 import { fileURLToPath } from "url";
@@ -80,16 +81,74 @@ app.engine("ejs", ejsMate);
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", async (req, res) => {
   if (!res.locals.user) {
     return res.redirect("/login");
   }
+  const userId = res.locals.user._id;
+
+  let trips = [];
+
+  if (res.locals.user.role === "driver") {
+
+    trips = await Trip.find({
+      driver: userId
+    });
+
+  } else {
+
+    trips = await Trip.find({
+      driver: { $ne: userId }
+    }).populate("driver");
+
+  }
+
+  const createdTrips = await Trip.countDocuments({
+    driver: userId
+  });
+
+  const joinedTrips = await Trip.countDocuments({
+    passengers: userId
+  });
+
+  const totalTrips = createdTrips + joinedTrips;
+  const upcomingTrips = await Trip.countDocuments({
+
+    passengers: userId,
+
+    time: {
+      $gte: new Date()
+    }
+
+  });
+
+  const nextRide = await Trip.findOne({
+
+    passengers: userId,
+
+    time: {
+      $gte: new Date()
+    }
+
+  }).sort({
+    time: 1
+  });
+
+
   if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
+      trips,
+      totalTrips,
+      upcomingTrips,
+      nextRide,
       mapToken: process.env.MAP_TOKEN || "",
     });
   } else {
     return res.render("listings/rider_dashboard", {
+      trips,
+      totalTrips,
+      upcomingTrips,
+      nextRide,
       mapToken: process.env.MAP_TOKEN || "",
     });
   }
@@ -143,7 +202,7 @@ app.get("/about", (req, res) => {
 // app.listen(3000, () => {
 //   console.log("Server is running on http://localhost:3000");
 // });
-app.get("/my-bookings",(req,res)=>{
+app.get("/my-bookings", (req, res) => {
   res.render("listings/booking");
 });
 
@@ -201,6 +260,55 @@ app.post("/login", async (req, res, next) => {
 //   }
 // };
 
+app.post("/trips", async (req, res) => {
+  const { pickup, destination, time } = req.body;
+
+  const newTrip = new Trip({
+
+    driver: res.locals.user._id,
+
+    pickup,
+    destination,
+    time: new Date(time),
+    seats: 1
+  });
+
+  await newTrip.save();
+
+  res.redirect("/dashboard");
+
+});
+
+app.post("/join/:id", async (req, res) => {
+  const trip = await Trip.findById(req.params.id);
+
+  if (!trip) {
+    return res.redirect("/dashboard");
+  }
+  if (trip.driver.equals(res.locals.user._id)) {
+    return res.redirect("/dashboard");
+  }
+  if (trip.passengers.includes(res.locals.user._id)) {
+    return res.redirect("/dashboard");
+  }
+
+  if (trip.seats > 0) {
+
+    trip.passengers.push(res.locals.user._id);
+
+    trip.seats -= 1;
+
+    await trip.save();
+
+  }
+
+  res.redirect("/dashboard");
+
+});
+
+app.get("/my-bookings")
+
+
 app.post("/logout", (req, res) => {
   res.clearCookie("token");
   res.redirect("/");
@@ -221,16 +329,16 @@ app.use((err, req, res, next) => {
 });
 
 connectDB()
-.then(() => {
+  .then(() => {
 
-  app.listen(process.env.PORT || 3000, () => {
-    console.log("Server is running on port 3000");
+    app.listen(process.env.PORT || 3000, () => {
+      console.log("Server is running on port 3000");
+    });
+
+  })
+  .catch((err) => {
+
+    console.log("Database connection failed");
+    console.error(err);
+
   });
-
-})
-.catch((err) => {
-
-  console.log("Database connection failed");
-  console.error(err);
-
-});
