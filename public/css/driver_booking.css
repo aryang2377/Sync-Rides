@@ -90,6 +90,8 @@
 }
 
 .booking-detail {
+  gap: 35px;
+  flex-wrap: wrap;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -224,4 +226,7 @@
     gap: 13px;
     flex-direction: column;
   }
+}
+.pending-passenger {
+  margin-left: 110px;
 }

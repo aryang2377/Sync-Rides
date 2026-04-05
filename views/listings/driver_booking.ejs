@@ -64,7 +64,7 @@
                         <span class="passenger-phone"><%= booking.rider.phone %></span>
                       <% } %>
                     </div>
-                    <div class="booking-status">
+                    <div class="booking-status <%= booking.status %>-passenger">
                       <span class="status <%= booking.status %>"><%= booking.status %></span>
                       <span class="booking-seats"><%= booking.seats_booked %> seat<%= booking.seats_booked > 1 ? 's' : '' %></span>
                     </div>
