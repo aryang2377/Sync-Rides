@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import User from "./models/user.js";
 import Ride from "./models/rides.js";
 import Booking from "./models/booking.js";
+import Trip from "./models/trip.js";
 import connectDB from "./db/sample.js";
 
 import { fileURLToPath } from "url";
@@ -60,14 +61,66 @@ app.engine("ejs", ejsMate);
 app.get("/", (req, res) => {
   res.render("listings/home");
 });
-
 app.get("/dashboard", async (req, res) => {
   if (!res.locals.user) {
     return res.redirect("/login");
   }
+  const userId = res.locals.user._id;
+
+  let trips = [];
+
+  if (res.locals.user.role === "driver") {
+
+    trips = await Trip.find({
+      driver: userId
+    });
+
+  } else {
+
+    trips = await Trip.find({
+      driver: { $ne: userId }
+    }).populate("driver");
+
+  }
+
+  const createdTrips = await Trip.countDocuments({
+    driver: userId
+  });
+
+  const joinedTrips = await Trip.countDocuments({
+    passengers: userId
+  });
+
+  const totalTrips = createdTrips + joinedTrips;
+  const upcomingTrips = await Trip.countDocuments({
+
+    passengers: userId,
+
+    time: {
+      $gte: new Date()
+    }
+
+  });
+
+  const nextRide = await Trip.findOne({
+
+    passengers: userId,
+
+    time: {
+      $gte: new Date()
+    }
+
+  }).sort({
+    time: 1
+  });
+
 
   if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
+      trips,
+      totalTrips,
+      upcomingTrips,
+      nextRide,
       mapToken: process.env.MAP_TOKEN || "",
     });
   } else {
@@ -119,7 +172,11 @@ app.get("/dashboard", async (req, res) => {
       console.error("Error fetching rides:", error);
 
       return res.render("listings/rider_dashboard", {
-        mapToken: process.env.MAP_TOKEN || "",
+        trips,
+      totalTrips,
+      upcomingTrips,
+      nextRide,
+      mapToken: process.env.MAP_TOKEN || "",
         availableRides: [],
       });
     }
@@ -612,6 +669,55 @@ app.post("/join-ride/:rideId", async (req, res, next) => {
     next(err);
   }
 });
+
+app.post("/trips", async (req, res) => {
+  const { pickup, destination, time } = req.body;
+
+  const newTrip = new Trip({
+
+    driver: res.locals.user._id,
+
+    pickup,
+    destination,
+    time: new Date(time),
+    seats: 1
+  });
+
+  await newTrip.save();
+
+  res.redirect("/dashboard");
+
+});
+
+app.post("/join/:id", async (req, res) => {
+  const trip = await Trip.findById(req.params.id);
+
+  if (!trip) {
+    return res.redirect("/dashboard");
+  }
+  if (trip.driver.equals(res.locals.user._id)) {
+    return res.redirect("/dashboard");
+  }
+  if (trip.passengers.includes(res.locals.user._id)) {
+    return res.redirect("/dashboard");
+  }
+
+  if (trip.seats > 0) {
+
+    trip.passengers.push(res.locals.user._id);
+
+    trip.seats -= 1;
+
+    await trip.save();
+
+  }
+
+  res.redirect("/dashboard");
+
+});
+
+app.get("/my-bookings")
+
 
 app.post("/logout", (req, res) => {
   res.clearCookie("token");
