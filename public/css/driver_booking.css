@@ -26,7 +26,9 @@
 }
 
 .ride-info p {
-  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
   font-size: 14px;
   color: #ccc;
 }
@@ -91,7 +93,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -195,4 +197,31 @@
   margin: 0;
   font-size: 14px;
   color: #d4af37;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+}
+.card-header span {
+  font-size: 27px;
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: 600;
+}
+.card-header i {
+  font-size: 25px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+@media (max-width: 600px) {
+  .ride-item {
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 17px;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+    flex-direction: column;
+  }
 }

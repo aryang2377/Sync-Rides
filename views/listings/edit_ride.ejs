@@ -14,25 +14,20 @@
 <div class="driver-dashboard-wrapper">
   <div class="dashboard-content">
     <!-- HEADER -->
-    <header class="driver-header">
-      <div class="driver-welcome">
-        <p style="font-size: x-large">
-          Edit Ride
-        </p>
-      </div>
-    </header>
+    <div class="card-header">
+        <i class="fas fa-edit"></i>
+        <h3>Edit Your Ride Offer</h3>
+      </div><br>
 
     <!-- EDIT FORM -->
     <section class="glass-card">
-      <div class="card-header">
-        <i class="fas fa-edit"></i>
-        <h3>Edit Your Ride Offer</h3>
-      </div>
+      
 
       <form action="/rides/<%= ride._id %>?_method=PUT" method="POST">
         <div class="form-field">
-          <label>Your Route</label>
+          <label for="route" >Your Route</label>
           <input
+            id="route"
             type="text"
             name="route"
             value="<%= ride.origin.address.toUpperCase() %> to <%= ride.destination.address.toUpperCase() %>"
@@ -42,8 +37,9 @@
         </div>
 
         <div class="form-field">
-          <label>Available Seats</label>
+          <label for="seats">Available Seats</label>
           <input
+            id="seats"
             type="number"
             name="seats"
             min="1"
@@ -53,16 +49,13 @@
           />
         </div>
          <div class="form-field">
-            <label>Departure Date & Time</label>
+            <label for="departureDate">Departure Date & Time</label>
             <input
               type="text"
               class="form-control"
               id="departureDate"
               name="departure"
-              value="<%= new Date(ride.departure_time).toLocaleString('en-IN', {
-  dateStyle: 'medium',
-  timeStyle: 'short'
-}) %>"
+              value="<%= new Date(ride.departure_time).toLocaleString('en-IN', { dateStyle: 'medium',  timeStyle: 'short'}) %>"
               placeholder="Select date and time"
               required
             />
@@ -70,8 +63,8 @@
         
 
         <div class="form-field">
-          <label>Trip Category</label>
-          <select class="dark-select" name="category">
+          <label for="trip">Trip Category</label>
+          <select class="dark-select" name="category" id="trip">
             <option value="local" <%= ride.category === 'local' ? 'selected' : '' %>>Local City Ride</option>
             <option value="outstation" <%= ride.category === 'outstation' ? 'selected' : '' %>>Outstation Journey</option>
           </select>

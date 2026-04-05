@@ -4,20 +4,14 @@
 <div class="driver-dashboard-wrapper">
   <div class="dashboard-content">
     <!-- HEADER -->
-    <header class="driver-header">
-      <div class="driver-welcome">
-        <p style="font-size: x-large">
-          Booked Rides
-        </p>
-      </div>
-    </header>
+    <div class="card-header">
+        <i class="fas fa-car"></i>
+        <span>Booked Rides</span>
+    </div><br><br>
 
     <!-- OFFERED RIDES -->
     <section class="glass-card offered-rides-section">
-      <div class="card-header">
-        <i class="fas fa-car"></i>
-        <h3>Booked Rides</h3>
-      </div>
+      
 
       <% if (!rides || rides.length === 0) { %>
         <p class="card-desc">You haven't offered any rides yet.</p>
@@ -29,19 +23,19 @@
               <div class="ride-info">
                 <h4><%= ride.origin.address.toUpperCase() %> ➔ <%= ride.destination.address.toUpperCase() %></h4>
                 <p>
-                  <i class="fas fa-calendar"></i>
-                  <%= new Date(ride.departure_time).toLocaleDateString() %>
-                  <i class="fas fa-clock"></i>
+                  <i class="fas fa-calendar"></i>&nbsp;&nbsp;
+                  <%= new Date(ride.departure_time).toLocaleDateString() %>&nbsp;&nbsp;&nbsp;
+                  <i class="fas fa-clock"></i>&nbsp;
                   <%= new Date(ride.departure_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
                 </p>
                 <p>
-                  <i class="fas fa-users"></i>
+                  <i class="fas fa-users"></i>&nbsp;&nbsp;
                   <%= ride.available_seats %> / <%= ride.total_seats %> seats available
                 </p>
                 <% const rideBookings = bookingsByRide[ride._id] || []; %>
                 <% if (rideBookings.length > 0) { %>
                   <div class="bookings-summary">
-                    <p><i class="fas fa-ticket-alt"></i> <%= rideBookings.length %> booking<%= rideBookings.length > 1 ? 's' : '' %></p>
+                    <p><i class="fas fa-ticket-alt"></i>&nbsp;&nbsp; <%= rideBookings.length %> booking<%= rideBookings.length > 1 ? 's' : '' %></p>
                   </div>
                 <% } %>
               </div>
@@ -61,7 +55,7 @@
             
             <% if (rideBookings.length > 0) { %>
               <div class="ride-bookings">
-                <h5>Passengers Booked:</h5>
+                <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Passengers Booked:</h5>
                 <% rideBookings.forEach((booking) => { %>
                   <div class="booking-detail">
                     <div class="passenger-info">
