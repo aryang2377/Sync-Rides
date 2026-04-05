@@ -201,6 +201,7 @@
   color: #d4af37;
 }
 .card-header {
+  gap: 10px;
   display: flex;
   align-items: center;
 }
