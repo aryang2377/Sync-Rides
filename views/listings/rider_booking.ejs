@@ -1,0 +1,211 @@
+<% layout('/layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/booking.css" />
+
+<div class="booking-page-container">
+  <!-- HEADER -->
+
+  <div class="page-header">
+    <h1>My Bookings</h1>
+
+    <p>View and manage all your ride bookings in one place.</p>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+
+  <div class="booking-layout">
+    <!-- LEFT SIDE -->
+
+    <div class="bookings-main">
+      <div class="bookings-scroll">
+        <!-- BOOKING 1 -->
+
+        <div class="booking-card">
+          <div class="location-icon green">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+
+          <div class="route-section">
+            <h3>Delhi, India</h3>
+            <p>Noida, India</p>
+
+            <div class="meta-row">
+              <span>
+                <i class="fas fa-calendar"></i>
+                10 Apr 2026
+              </span>
+
+              <span>
+                <i class="fas fa-clock"></i>
+                09:00 AM
+              </span>
+            </div>
+          </div>
+
+          <div class="driver-section">
+            <h4>
+              Rahul Sharma
+              <span class="rating">★ 4.8</span>
+            </h4>
+
+            <p>Maruti Ertiga • DL 01 AB 1234</p>
+
+            <p>2 Seats</p>
+          </div>
+
+          <div class="fare-section">
+            <h2>₹240</h2>
+            <span>Total Fare</span>
+          </div>
+
+          <div class="action-section">
+            <span class="status upcoming"> Upcoming </span>
+
+            <button class="btn-view">View Details</button>
+
+            <button class="btn-cancel">Cancel Ride</button>
+          </div>
+        </div>
+
+        <!-- BOOKING 2 -->
+
+        <div class="booking-card">
+          <div class="location-icon blue">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+
+          <div class="route-section">
+            <h3>Gurgaon, India</h3>
+            <p>Delhi, India</p>
+
+            <div class="meta-row">
+              <span>
+                <i class="fas fa-calendar"></i>
+                02 Apr 2026
+              </span>
+
+              <span>
+                <i class="fas fa-clock"></i>
+                06:30 PM
+              </span>
+            </div>
+          </div>
+
+          <div class="driver-section">
+            <h4>
+              Amit Kumar
+              <span class="rating">★ 4.6</span>
+            </h4>
+
+            <p>Hyundai i20 • HR 26 XY 5678</p>
+
+            <p>1 Seat</p>
+          </div>
+
+          <div class="fare-section">
+            <h2>₹180</h2>
+            <span>Total Fare</span>
+          </div>
+
+          <div class="action-section">
+            <span class="status completed"> Completed </span>
+
+            <button class="btn-view">View Details</button>
+          </div>
+        </div>
+
+        <!-- BOOKING 3 -->
+
+        <div class="booking-card">
+          <div class="location-icon red">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+
+          <div class="route-section">
+            <h3>Faridabad, India</h3>
+            <p>Noida, India</p>
+
+            <div class="meta-row">
+              <span>
+                <i class="fas fa-calendar"></i>
+                28 Mar 2026
+              </span>
+
+              <span>
+                <i class="fas fa-clock"></i>
+                08:15 AM
+              </span>
+            </div>
+          </div>
+
+          <div class="driver-section">
+            <h4>
+              Neha Verma
+              <span class="rating">★ 4.9</span>
+            </h4>
+
+            <p>Honda City • DL 12 CD 3456</p>
+
+            <p>3 Seats</p>
+          </div>
+
+          <div class="fare-section">
+            <h2>₹360</h2>
+            <span>Total Fare</span>
+          </div>
+
+          <div class="action-section">
+            <span class="status cancelled"> Cancelled </span>
+
+            <button class="btn-view">View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+
+    <aside class="booking-sidebar">
+      <div class="sidebar-card">
+        <h3>Booking Summary</h3>
+
+        <div class="summary-item">
+          <span>Total Bookings</span>
+          <strong>3</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Upcoming</span>
+          <strong>1</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Completed</span>
+          <strong>1</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Cancelled</span>
+          <strong>1</strong>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Looking for a new ride?</h3>
+
+        <p>Find verified drivers and book your next trip.</p>
+
+        <a href="/find-ride" class="btn-find-ride"> Find a Ride </a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Need Help?</h3>
+
+        <p>Our support team is here to help you.</p>
+
+        <p>📞 +91 98765 43210</p>
+
+        <p>✉ support@syncrides.com</p>
+      </div>
+    </aside>
+  </div>
+</div>

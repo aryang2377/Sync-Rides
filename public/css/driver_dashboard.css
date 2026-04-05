@@ -69,7 +69,10 @@
 .status-toggle input {
   display: none;
 }
-.status-text {
+
+.status-text::after {
+  content: "Offline";
+  color: rgb(216, 28, 28);
   font-size: large;
 }
 
@@ -99,7 +102,13 @@
 }
 
 .status-toggle input:checked + .toggle-slider {
-  background: #00ff88;
+  background-color: #00ff88;
+}
+
+.status-toggle input:checked ~ .status-text::after {
+  content: "Online";
+  color: rgb(20, 205, 20);
+  font-size: large;
 }
 
 /* CARDS */
@@ -138,6 +147,7 @@
 }
 
 .stat-value {
+  background: none;
   font-size: 1.8rem;
   font-weight: bold;
 }
@@ -248,4 +258,10 @@
   .driver-action-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.form-field label {
+  font-size: 14px;
+  text-align: start;
+  margin-left: 10px;
 }

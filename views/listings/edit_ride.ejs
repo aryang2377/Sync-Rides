@@ -1,0 +1,91 @@
+<% layout('/layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/css/driver_dashboard.css" />
+<!-- Flatpickr CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://npmcdn.com/flatpickr/dist/themes/dark.css"
+/>
+
+<div class="driver-dashboard-wrapper">
+  <div class="dashboard-content">
+    <!-- HEADER -->
+    <div class="card-header">
+        <i class="fas fa-edit"></i>
+        <h3>Edit Your Ride Offer</h3>
+      </div><br>
+
+    <!-- EDIT FORM -->
+    <section class="glass-card">
+      
+
+      <form action="/rides/<%= ride._id %>?_method=PUT" method="POST">
+        <div class="form-field">
+          <label for="route" >Your Route</label>
+          <input
+            id="route"
+            type="text"
+            name="route"
+            value="<%= ride.origin.address.toUpperCase() %> to <%= ride.destination.address.toUpperCase() %>"
+            placeholder="e.g. Jaipur to Delhi"
+            required
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="seats">Available Seats</label>
+          <input
+            id="seats"
+            type="number"
+            name="seats"
+            min="1"
+            max="7"
+            value="<%= ride.total_seats %>"
+            required
+          />
+        </div>
+         <div class="form-field">
+            <label for="departureDate">Departure Date & Time</label>
+            <input
+              type="text"
+              class="form-control"
+              id="departureDate"
+              name="departure"
+              value="<%= new Date(ride.departure_time).toLocaleString('en-IN', { dateStyle: 'medium',  timeStyle: 'short'}) %>"
+              placeholder="Select date and time"
+              required
+            />
+          </div>
+        
+
+        <div class="form-field">
+          <label for="trip">Trip Category</label>
+          <select class="dark-select" name="category" id="trip">
+            <option value="local" <%= ride.category === 'local' ? 'selected' : '' %>>Local City Ride</option>
+            <option value="outstation" <%= ride.category === 'outstation' ? 'selected' : '' %>>Outstation Journey</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-gold-full">
+          <i class="fas fa-save"></i>
+          Update Ride
+        </button>
+      </form>
+    </section>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  // Initialize Flatpickr on the date input
+  flatpickr("#departureDate", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    minDate: "today",
+    time_24hr: true,
+    placeholder: "Select date and time",
+  });
+</script>

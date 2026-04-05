@@ -520,3 +520,13 @@ img {
   font-size: 20px !important;
   font-weight: 600 !important;
 }
+@media (min-width: 576px) and (max-width: 768px) {
+  .container {
+    max-width: 700px !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .container {
+    max-width: 810px !important;
+  }
+}

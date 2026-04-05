@@ -8,6 +8,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import User from "./models/user.js";
+import Ride from "./models/rides.js";
+import Booking from "./models/booking.js";
 import Trip from "./models/trip.js";
 import connectDB from "./db/sample.js";
 
@@ -55,28 +57,6 @@ app.use(express.json());
 app.use(method("_method"));
 
 app.engine("ejs", ejsMate);
-
-// const auth = (req, res, next) => {
-//   try {
-//     const token = req.cookies.token;
-
-//     if (!token) {
-//       return res.redirect("/login");
-//     }
-
-//     const decoded = jwt.verify(
-//       token,
-//       process.env.JWT_SECRET
-//     );
-
-//     req.user = decoded;
-
-//     next();
-
-//   } catch (err) {
-//     return res.redirect("/login");
-//   }
-// };
 
 app.get("/", (req, res) => {
   res.render("listings/home");
@@ -144,13 +124,62 @@ app.get("/dashboard", async (req, res) => {
       mapToken: process.env.MAP_TOKEN || "",
     });
   } else {
-    return res.render("listings/rider_dashboard", {
-      trips,
+    try {
+      console.log("Fetching rides for rider:", res.locals.user._id);
+
+      // Get all rides user has already booked
+      const userBookings = await Booking.find({
+        rider: res.locals.user._id,
+        status: { $in: ["pending", "confirmed"] },
+      }).select("ride");
+
+      // Convert to Set for fast lookup
+      const bookedRideIds = new Set(
+        userBookings.map((booking) => booking.ride.toString())
+      );
+
+      console.log("User has booked rides:", [...bookedRideIds]);
+
+      // Fetch available rides
+      const availableRides = await Ride.find({
+        status: "pending",
+        available_seats: { $gt: 0 },
+        departure_time: { $gte: new Date() },
+      })
+        .populate("driver", "fullname")
+        .sort({ departure_time: 1 })
+        .limit(10);
+
+      // Attach booking status
+      const ridesWithStatus = availableRides.map((ride) => ({
+        ...ride.toObject(),
+        isBookedByUser: bookedRideIds.has(ride._id.toString()),
+      }));
+
+      // console.log("Available rides found:", availableRides.length);
+
+      // availableRides.forEach((ride) => {
+      //   console.log(
+      //     `Ride ${ride._id}: ${ride.origin.address} → ${ride.destination.address}, seats: ${ride.available_seats}`
+      //   );
+      // });
+
+      return res.render("listings/rider_dashboard", {
+        mapToken: process.env.MAP_TOKEN || "",
+        availableRides: ridesWithStatus,
+      });
+    } catch (error) {
+      console.error("Error fetching rides:", error);
+
+      return res.render("listings/rider_dashboard", {
+        trips,
       totalTrips,
       upcomingTrips,
       nextRide,
       mapToken: process.env.MAP_TOKEN || "",
-    });
+        availableRides: [],
+      });
+    }
   }
 });
 
@@ -195,15 +224,213 @@ app.post("/signup", async (req, res, next) => {
   }
 });
 
+const requireAuth = (req, res, next) => {
+  if (!res.locals.user) {
+    return res.redirect("/login");
+  }
+  next();
+};
+
 app.get("/about", (req, res) => {
   res.render("listings/about");
 });
 
-// app.listen(3000, () => {
-//   console.log("Server is running on http://localhost:3000");
-// });
-app.get("/my-bookings", (req, res) => {
-  res.render("listings/booking");
+app.get("/bookings", requireAuth, async (req, res, next) => {
+  if (!res.locals.user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const user = res.locals.user;
+    if (user.role === "driver") {
+      // For drivers, show offered rides with bookings
+      const driverRides = await Ride.find({ driver: user._id }).sort({
+        departure_time: -1,
+      });
+      const rideIds = driverRides.map((ride) => ride._id);
+      const rideBookings = await Booking.find({ ride: { $in: rideIds } })
+        .populate("rider", "fullname phone")
+        .sort({ createdAt: -1 });
+
+      // Group bookings by ride
+      const bookingsByRide = {};
+      rideBookings.forEach((booking) => {
+        if (!bookingsByRide[booking.ride]) {
+          bookingsByRide[booking.ride] = [];
+        }
+        bookingsByRide[booking.ride].push(booking);
+      });
+
+      res.render("listings/driver_booking", {
+        rides: driverRides,
+        bookingsByRide,
+      });
+    } else {
+      // For riders, show bookings
+      const bookings = await Booking.find({
+        rider: user._id,
+        status: { $in: ["completed", "cancelled"] },
+      })
+        .populate("driver", "fullname vehicle_model phone")
+        .populate("ride");
+
+      const summary = {
+        total: bookings.length,
+        upcoming: bookings.filter(
+          (b) => b.status === "pending" || b.status === "confirmed"
+        ).length,
+        completed: bookings.filter((b) => b.status === "completed").length,
+        cancelled: bookings.filter((b) => b.status === "cancelled").length,
+      };
+
+      res.render("listings/rider_booking", { bookings, summary });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+//rider..
+app.post("/bookings/:bookingId/update", requireAuth, async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.bookingId).populate(
+      "ride"
+    );
+    if (!booking) {
+      return res.status(404).render("error", { message: "Booking not found" });
+    }
+
+    const user = res.locals.user;
+    if (!booking.rider.equals(user._id) && !booking.driver.equals(user._id)) {
+      return res.status(403).render("error", { message: "Not authorized" });
+    }
+
+    const newSeats = Number(req.body.seats_booked);
+    if (!Number.isInteger(newSeats) || newSeats < 1) {
+      return res.status(400).render("error", { message: "Invalid seat count" });
+    }
+
+    const ride = booking.ride;
+    const seatDiff = newSeats - booking.seats_booked;
+    if (seatDiff > 0 && ride.available_seats < seatDiff) {
+      return res
+        .status(400)
+        .render("error", { message: "Not enough seats available" });
+    }
+
+    booking.seats_booked = newSeats;
+    booking.total_fare = newSeats * (ride.price_per_seat || 0);
+    await booking.save();
+
+    ride.available_seats -= seatDiff;
+    if (ride.available_seats < 0) {
+      ride.available_seats = 0;
+    }
+    if (ride.available_seats === 0 && ride.status !== "cancelled") {
+      ride.status = "completed";
+    }
+    await ride.save();
+
+    res.redirect("/bookings");
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/bookings/:bookingId/cancel", requireAuth, async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.bookingId).populate(
+      "ride"
+    );
+    if (!booking) {
+      return res.status(404).render("error", { message: "Booking not found" });
+    }
+
+    const user = res.locals.user;
+    if (!booking.rider.equals(user._id) && !booking.driver.equals(user._id)) {
+      return res.status(403).render("error", { message: "Not authorized" });
+    }
+
+    if (booking.status === "cancelled" || booking.status === "completed") {
+      return res.redirect("/bookings");
+    }
+
+    booking.status = "cancelled";
+    await booking.save();
+
+    const ride = booking.ride;
+    ride.available_seats += booking.seats_booked;
+    if (ride.status === "completed") {
+      ride.status = "active";
+    }
+    await ride.save();
+
+    res.redirect("/bookings");
+  } catch (err) {
+    next(err);
+  }
+});
+
+//driver
+app.post(
+  "/bookings/:bookingId/confirm",
+  requireAuth,
+  async (req, res, next) => {
+    try {
+      const booking = await Booking.findById(req.params.bookingId).populate(
+        "ride"
+      );
+      if (!booking) {
+        return res
+          .status(404)
+          .render("error", { message: "Booking not found" });
+      }
+
+      const user = res.locals.user;
+      if (!booking.driver.equals(user._id)) {
+        return res
+          .status(403)
+          .render("error", { message: "Only the driver can confirm bookings" });
+      }
+
+      booking.status = "confirmed";
+      await booking.save();
+
+      res.redirect("/bookings");
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.post("/bookings/:bookingId/delete", requireAuth, async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.bookingId).populate(
+      "ride"
+    );
+    if (!booking) {
+      return res.status(404).render("error", { message: "Booking not found" });
+    }
+
+    const user = res.locals.user;
+    if (!booking.rider.equals(user._id) && !booking.driver.equals(user._id)) {
+      return res.status(403).render("error", { message: "Not authorized" });
+    }
+
+    if (booking.status !== "cancelled") {
+      const ride = booking.ride;
+      ride.available_seats += booking.seats_booked;
+      if (ride.status === "completed") {
+        ride.status = "active";
+      }
+      await ride.save();
+    }
+
+    await booking.deleteOne();
+    res.redirect("/bookings");
+  } catch (err) {
+    next(err);
+  }
 });
 
 app.post("/login", async (req, res, next) => {
@@ -238,27 +465,210 @@ app.post("/login", async (req, res, next) => {
   }
 });
 
-// const createReview = async (req, res) => {
-//   try {
-//     const { booking, driver, rating, comment } = req.body
+// Create trip route for drivers to offer rides
+app.post("/create-trip", async (req, res, next) => {
+  try {
+    const { route, seats, departure, category } = req.body;
 
-//     const review = await Review.create({
-//       booking,
-//       driver,
-//       rating,
-//       comment,
-//       reviewer: driver,
-//     });
-//     res.status(201).json({
-//       success: true,
-//       review,
-//     });
-//   } catch (err) {
-//     res.status(500).json({
-//       message: err,
-//     });
-//   }
-// };
+    console.log("Create trip request:", {
+      route,
+      seats,
+      departure,
+      category,
+      driver: res.locals.user._id,
+    });
+
+    // Parse the route (e.g., "Jaipur to Delhi" -> from: "Jaipur", to: "Delhi")
+    const routeParts = route.toLowerCase().split(" to ");
+    const from = routeParts[0]?.trim();
+    const to = routeParts[1]?.trim();
+
+    if (!from || !to) {
+      return res.status(400).render("error", {
+        message: "Invalid route format. Use 'From to To' format.",
+      });
+    }
+
+    const newRide = new Ride({
+      driver: res.locals.user._id,
+      origin: {
+        address: from,
+        coordinates: { lat: 0, lng: 0 }, // Will be updated with geocoding later
+      },
+      destination: {
+        address: to,
+        coordinates: { lat: 0, lng: 0 }, // Will be updated with geocoding later
+      },
+      departure_time: new Date(departure), // Flatpickr sends in Y-m-d H:i format which Date() can parse
+      total_seats: parseInt(seats),
+      available_seats: parseInt(seats),
+      price_per_seat: 0, // Can be calculated based on distance later
+      status: "pending",
+    });
+
+    const savedRide = await newRide.save();
+    console.log("Ride created successfully:", savedRide._id);
+
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error("Error creating trip:", err);
+    next(err);
+  }
+});
+
+// Edit ride route
+app.get("/rides/:rideId/edit", requireAuth, async (req, res, next) => {
+  try {
+    const ride = await Ride.findById(req.params.rideId);
+    if (!ride) {
+      return res.status(404).render("error", { message: "Ride not found" });
+    }
+    if (ride.driver.toString() !== res.locals.user._id.toString()) {
+      return res
+        .status(403)
+        .render("error", { message: "You can only edit your own rides" });
+    }
+    res.render("listings/edit_ride", {
+      ride,
+      mapToken: process.env.MAP_TOKEN || "",
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Update ride route
+app.put("/rides/:rideId", requireAuth, async (req, res, next) => {
+  try {
+    const ride = await Ride.findById(req.params.rideId);
+    if (!ride) {
+      return res.status(404).render("error", { message: "Ride not found" });
+    }
+    if (ride.driver.toString() !== res.locals.user._id.toString()) {
+      return res
+        .status(403)
+        .render("error", { message: "You can only edit your own rides" });
+    }
+
+    const { route, seats, departure, category } = req.body;
+    const routeParts = route.toLowerCase().split(" to ");
+    const from = routeParts[0]?.trim();
+    const to = routeParts[1]?.trim();
+
+    if (!from || !to) {
+      return res.status(400).render("error", {
+        message: "Invalid route format. Use 'From to To' format.",
+      });
+    }
+
+    ride.origin.address = from;
+    ride.destination.address = to;
+    ride.departure_time = new Date(departure);
+    ride.total_seats = parseInt(seats);
+    ride.available_seats = Math.min(ride.available_seats, parseInt(seats)); // Adjust if seats increased
+    ride.category = category;
+
+    await ride.save();
+    res.redirect("/bookings");
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Delete ride route
+app.delete("/rides/:rideId", requireAuth, async (req, res, next) => {
+  try {
+    const ride = await Ride.findById(req.params.rideId);
+    if (!ride) {
+      return res.status(404).render("error", { message: "Ride not found" });
+    }
+    if (ride.driver.toString() !== res.locals.user._id.toString()) {
+      return res
+        .status(403)
+        .render("error", { message: "You can only delete your own rides" });
+    }
+
+    // Check if there are active bookings
+    const activeBookings = await Booking.find({
+      ride: ride._id,
+      status: { $in: ["pending", "confirmed"] },
+    });
+    if (activeBookings.length > 0) {
+      return res.status(400).render("error", {
+        message: "Cannot delete ride with active bookings",
+      });
+    }
+
+    await ride.deleteOne();
+    res.redirect("/bookings");
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Join ride route for riders to book seats
+app.post("/join-ride/:rideId", async (req, res, next) => {
+  try {
+    const rideId = req.params.rideId;
+    const riderId = res.locals.user._id;
+
+    console.log(`Join ride attempt: rideId=${rideId}, riderId=${riderId}`);
+
+    // Check if ride exists and has available seats
+    const ride = await Ride.findById(rideId);
+    if (!ride) {
+      console.log("Ride not found");
+      return res.status(404).render("error", { message: "Ride not found" });
+    }
+
+    console.log(`Ride found: available_seats=${ride.available_seats}`);
+
+    if (ride.available_seats <= 0) {
+      console.log("No seats available");
+      return res.status(400).render("error", { message: "No seats available" });
+    }
+
+    // Check if rider already booked this ride
+    const existingBooking = await Booking.findOne({
+      ride: rideId,
+      rider: riderId,
+      status: { $in: ["pending", "confirmed"] },
+    });
+
+    if (existingBooking) {
+      console.log("User already booked this ride");
+      return res
+        .status(400)
+        .render("error", { message: "You have already booked this ride" });
+    }
+
+    // Create booking
+    const booking = new Booking({
+      ride: rideId,
+      rider: riderId,
+      driver: ride.driver,
+      seats_booked: 1, // For now, book 1 seat
+      total_fare: ride.price_per_seat || 0, // Will be calculated properly later
+      status: "pending",
+    });
+
+    await booking.save();
+    console.log("Booking created successfully");
+
+    // Update available seats
+    const oldSeats = ride.available_seats;
+    ride.available_seats -= 1;
+    await ride.save();
+    console.log(
+      `Available seats updated: ${oldSeats} -> ${ride.available_seats}`
+    );
+
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error("Error joining ride:", err);
+    next(err);
+  }
+});
 
 app.post("/trips", async (req, res) => {
   const { pickup, destination, time } = req.body;
@@ -330,15 +740,10 @@ app.use((err, req, res, next) => {
 
 connectDB()
   .then(() => {
-
     app.listen(process.env.PORT || 3000, () => {
-      console.log("Server is running on port 3000");
+      console.log(`Server is running at http://localhost:3000`);
     });
-
   })
   .catch((err) => {
-
-    console.log("Database connection failed");
-    console.error(err);
-
+    console.log("MONGO DB connection failed", err);
   });
