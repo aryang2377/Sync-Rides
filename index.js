@@ -74,32 +74,47 @@ app.get("/dashboard", async (req, res) => {
     driver: { $ne: userId },
   }).populate("driver");
 
-  const createdTrips = await Trip.countDocuments({
-    driver: userId,
-  });
+const now = new Date();
 
-  const joinedTrips = await Trip.countDocuments({
-    passengers: userId,
-  });
+/* TOTAL TRIPS */
+const createdTrips = await Trip.countDocuments({
+  driver: userId,
+});
 
-  const totalTrips = createdTrips + joinedTrips;
-  const upcomingTrips = await Trip.countDocuments({
-    passengers: userId,
+const joinedTrips = await Trip.countDocuments({
+  passengers: userId,
+});
 
-    time: {
-      $gte: new Date(),
-    },
-  });
+const totalTrips = createdTrips + joinedTrips;
 
-  const nextRide = await Trip.findOne({
-    passengers: userId,
+/* FIXED UPCOMING COUNT */
 
-    time: {
-      $gte: new Date(),
-    },
-  }).sort({
-    time: 1,
-  });
+// upcoming trips (created or joined)
+const upcomingTripCount = await Trip.countDocuments({
+  $or: [
+    { driver: userId },
+    { passengers: userId }
+  ],
+  time: { $gte: now }
+});
+
+// upcoming bookings (rides joined)
+const upcomingBookingCount = await Booking.countDocuments({
+  rider: userId,
+  status: { $in: ["pending", "confirmed"] }
+});
+
+// FINAL UPCOMING VALUE
+const upcomingTrips = upcomingTripCount + upcomingBookingCount;
+
+/* FIXED NEXT RIDE */
+
+const nextRide = await Ride.findOne({
+  departure_time: { $gte: now },
+  status: { $ne: "cancelled" }
+})
+.populate("driver", "fullname")
+.sort({ departure_time: 1 });
 
   if (res.locals.user.role === "driver") {
     return res.render("listings/driver_dashboard", {
