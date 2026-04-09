@@ -74,53 +74,80 @@ app.get("/dashboard", async (req, res) => {
     driver: { $ne: userId },
   }).populate("driver");
 
-const now = new Date();
+  const now = new Date();
 
-/* TOTAL TRIPS */
-const createdTrips = await Trip.countDocuments({
-  driver: userId,
-});
+  /* TOTAL TRIPS */
+  const createdTrips = await Trip.countDocuments({
+    driver: userId,
+  });
 
-const joinedTrips = await Trip.countDocuments({
-  passengers: userId,
-});
+  const joinedTrips = await Trip.countDocuments({
+    passengers: userId,
+  });
 
-const totalTrips = createdTrips + joinedTrips;
+  const totalTrips = createdTrips + joinedTrips;
 
-/* FIXED UPCOMING COUNT */
+  /* FIXED UPCOMING COUNT */
 
-// upcoming trips (created or joined)
-const upcomingTripCount = await Trip.countDocuments({
-  $or: [
-    { driver: userId },
-    { passengers: userId }
-  ],
-  time: { $gte: now }
-});
+  // upcoming trips (created or joined)
+  const upcomingTripCount = await Trip.countDocuments({
+    $or: [
+      { driver: userId },
+      { passengers: userId }
+    ],
+    time: { $gte: now }
+  });
 
-// upcoming bookings (rides joined)
-const upcomingBookingCount = await Booking.countDocuments({
-  rider: userId,
-  status: { $in: ["pending", "confirmed"] }
-});
+  // upcoming bookings (rides joined)
+  const upcomingBookingCount = await Booking.countDocuments({
+    rider: userId,
+    status: { $in: ["pending", "confirmed"] }
+  });
 
-// FINAL UPCOMING VALUE
-const upcomingTrips = upcomingTripCount + upcomingBookingCount;
+  // FINAL UPCOMING VALUE
+  const upcomingTrips = upcomingTripCount + upcomingBookingCount;
 
-/* FIXED NEXT RIDE */
+  /* FIXED NEXT RIDE */
 
-const nextRide = await Ride.findOne({
-  departure_time: { $gte: now },
-  status: { $ne: "cancelled" }
-})
-.populate("driver", "fullname")
-.sort({ departure_time: 1 });
+  const nextRide = await Ride.findOne({
+    departure_time: { $gte: now },
+    status: { $ne: "cancelled" }
+  })
+    .populate("driver", "fullname")
+    .sort({ departure_time: 1 });
 
   if (res.locals.user.role === "driver") {
+
+    const driverId = res.locals.user._id;
+
+    const driverRides = await Ride.find({
+      driver: driverId
+    }).select("_id");
+
+
+    const rideIds = driverRides.map(r => r._id);
+
+
+    const incomingRequests = await Booking.find({
+      ride: { $in: rideIds },
+      status: "pending"
+    })
+      .populate("rider", "fullname")
+      .populate("ride")
+
+    // TOTAL RIDES
+    const totalRides = await Booking.countDocuments({
+      ride: { $in: rideIds },
+      status: { $in: ["confirmed", "completed"] }
+    });
+
     return res.render("listings/driver_dashboard", {
       mapToken: process.env.MAP_TOKEN || "",
+      incomingRequests,
+      totalRides
     });
-  } else {
+  }
+  else {
     try {
       console.log("Fetching rides for rider:", res.locals.user._id);
 

@@ -1,217 +1,210 @@
 <% layout('/layouts/boilerplate.ejs') %>
-<link rel="stylesheet" href="/css/driver_dashboard.css" />
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-/>
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="https://npmcdn.com/flatpickr/dist/themes/dark.css"
-/>
+  <link rel="stylesheet" href="/css/driver_dashboard.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css" />
 
-<div class="driver-dashboard-wrapper">
-  <div class="dashboard-content">
-    <!-- HEADER -->
-    <header class="driver-header">
-      <div class="driver-welcome">
-        <!-- <h1>Driver Control Center</h1> -->
+  <div class="driver-dashboard-wrapper">
+    <div class="dashboard-content">
+      <!-- HEADER -->
+      <header class="driver-header">
+        <div class="driver-welcome">
+          <!-- <h1>Driver Control Center</h1> -->
 
-        <p style="font-size: x-large">
-          Welcome back,
-          <span class="gold-text">
-            <%= user && user.fullname ? user.fullname : 'Driver' %>
+          <p style="font-size: x-large">
+            Welcome back,
+            <span class="gold-text">
+              <%= user && user.fullname ? user.fullname : 'Driver' %>
+            </span>
+          </p>
+        </div>
+
+        <div class="header-right">
+          <!-- Notification -->
+          <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="notif-dot"></span>
+          </div>
+
+          <!-- Status Toggle -->
+          <label class="status-toggle">
+            <input type="checkbox" checked />
+            <span class="toggle-slider"></span>
+            <span class="status-text"></span>
+          </label>
+        </div>
+      </header>
+
+      <!-- STATS -->
+      <section class="stats-grid">
+        <div class="glass-card stat-card">
+          <span class="stat-label">Today's Earnings</span>
+          <span class="stat-value">
+            &nbsp;<%= totalRides %>
           </span>
-        </p>
-      </div>
-
-      <div class="header-right">
-        <!-- Notification -->
-        <div class="notification-bell">
-          <i class="fas fa-bell"></i>
-          <span class="notif-dot"></span>
         </div>
 
-        <!-- Status Toggle -->
-        <label class="status-toggle">
-          <input type="checkbox" checked />
-          <span class="toggle-slider"></span>
-          <span class="status-text"></span>
-        </label>
-      </div>
-    </header>
-
-    <!-- STATS -->
-    <section class="stats-grid">
-      <div class="glass-card stat-card">
-        <span class="stat-label">Today's Earnings</span>
-        <span class="stat-value">₹&nbsp;1,240</span>
-      </div>
-
-      <div class="glass-card stat-card">
-        <span class="stat-label">Rating</span>
-        <span class="stat-value gold"> &nbsp;4.9 ★</span>
-      </div>
-
-      <div class="glass-card stat-card">
-        <span class="stat-label">Total Rides</span>
-        <span class="stat-value"> &nbsp;142</span>
-      </div>
-
-      <div class="glass-card stat-card">
-        <span class="stat-label">Fuel Saved</span>
-        <span class="stat-value green"> &nbsp;45L</span>
-      </div>
-    </section>
-
-    <!-- MAIN GRID -->
-    <div class="driver-action-grid">
-      <!-- REQUESTS -->
-      <section class="glass-card">
-        <div class="card-header">
-          <i class="fas fa-satellite-dish"></i>
-          <h3>Incoming Rider Requests</h3>
+        <div class="glass-card stat-card">
+          <span class="stat-label">Rating</span>
+          <span class="stat-value gold"> &nbsp;4.9 ★</span>
         </div>
 
-        <p class="card-desc">Accept scheduled requests from riders nearby.</p>
+        <div class="glass-card stat-card">
+          <span class="stat-label">Total Rides</span>
+          <span class="stat-value">
+            &nbsp;<%= totalRides %>
+          </span>
+        </div>
 
-        <div class="request-container">
-          <div class="request-tile">
-            <div class="request-top">
-              <strong>Campus ➔ City Center</strong>
-              <span class="gold-text">₹180</span>
-            </div>
-
-            <div class="request-details">
-              <span>
-                <i class="fas fa-user"></i>
-                Aryan K.
-              </span>
-
-              <span>
-                <i class="fas fa-clock"></i>
-                10 mins away
-              </span>
-            </div>
-
-            <button class="btn-accept">
-              <i class="fas fa-check"></i>
-              Accept Request
-            </button>
-          </div>
-
-          <div class="request-tile">
-            <div class="request-top">
-              <strong>Dahmi Kalan ➔ Airport</strong>
-              <span class="gold-text">₹550</span>
-            </div>
-
-            <div class="request-details">
-              <span>
-                <i class="fas fa-user"></i>
-                Ishita P.
-              </span>
-
-              <span>
-                <i class="fas fa-calendar-alt"></i>
-                Today, 5:00 PM
-              </span>
-            </div>
-
-            <button class="btn-accept">
-              <i class="fas fa-check"></i>
-              Accept Request
-            </button>
-          </div>
+        <div class="glass-card stat-card">
+          <span class="stat-label">Fuel Saved</span>
+          <span class="stat-value green"> &nbsp;45L</span>
         </div>
       </section>
 
-      <!-- OFFER RIDE -->
-      <section class="glass-card">
-        <div class="card-header">
-          <i class="fas fa-plus-circle"></i>
-          <h3>Offer a Ride</h3>
-        </div>
-
-        <p class="card-desc">
-          Going somewhere? Post your trip for others to join.
-        </p>
-
-        <form action="/create-trip" method="POST">
-          <div class="form-field">
-            <label>Your Route</label>
-            <input
-              type="text"
-              name="route"
-              placeholder="e.g. Jaipur to Delhi"
-              required
-            />
+      <!-- MAIN GRID -->
+      <div class="driver-action-grid">
+        <!-- REQUESTS -->
+        <section class="glass-card">
+          <div class="card-header">
+            <i class="fas fa-satellite-dish"></i>
+            <h3>Incoming Rider Requests</h3>
           </div>
 
-          <div class="form-field">
-            <label>Available Seats</label>
-            <input
-              type="number"
-              name="seats"
-              min="1"
-              max="7"
-              placeholder="3"
-              required
-            />
+          <p class="card-desc">Accept scheduled requests from riders nearby.</p>
+
+          <div class="request-container">
+
+            <% if (!incomingRequests || incomingRequests.length === 0) { %>
+
+              <p>No incoming rider requests.</p>
+
+              <% } %>
+
+                <% incomingRequests.forEach(request=> { %>
+
+                  <div class="request-tile">
+
+                    <div class="request-top">
+
+                      <strong>
+                        <%= request.ride.origin.address %>
+                          ➔
+                          <%= request.ride.destination.address %>
+                      </strong>
+
+                      <span class="gold-text">
+                        ₹ <%= request.total_fare %>
+                      </span>
+
+                    </div>
+
+                    <div class="request-details">
+
+                      <span>
+
+                        <i class="fas fa-user"></i>
+
+                        <%= request.rider.fullname %>
+
+                      </span>
+
+                      <span>
+
+                        <i class="fas fa-clock"></i>
+
+                        Pending Request
+
+                      </span>
+
+                    </div>
+
+                    <form action="/bookings/<%= request._id %>/confirm" method="POST">
+
+                      <button class="btn-accept">
+
+                        <i class="fas fa-check"></i>
+
+                        Accept Request
+
+                      </button>
+
+                    </form>
+
+                  </div>
+
+                  <% }) %>
+
+          </div>
+        </section>
+
+        <!-- OFFER RIDE -->
+        <section class="glass-card">
+          <div class="card-header">
+            <i class="fas fa-plus-circle"></i>
+            <h3>Offer a Ride</h3>
           </div>
 
-          <div class="form-field">
-            <label>Departure Date & Time</label>
-            <input
-              type="text"
-              class="form-control"
-              id="departureDate"
-              name="departure"
-              placeholder="Select date and time"
-              required
-            />
-          </div>
+          <p class="card-desc">
+            Going somewhere? Post your trip for others to join.
+          </p>
 
-          <div class="form-field">
-            <label>Trip Category</label>
+          <form action="/create-trip" method="POST">
+            <div class="form-field">
+              <label>Your Route</label>
+              <input type="text" name="route" placeholder="e.g. Jaipur to Delhi" required />
+            </div>
 
-            <select class="dark-select" name="category">
-              <option value="local">Local City Ride</option>
+            <div class="form-field">
+              <label>Available Seats</label>
+              <input type="number" name="seats" min="1" max="7" placeholder="3" required />
+            </div>
 
-              <option value="outstation">Outstation Journey</option>
-            </select>
-          </div>
+            <div class="form-field">
+              <label>Departure Date & Time</label>
+              <input type="text" class="form-control" id="departureDate" name="departure"
+                placeholder="Select date and time" required />
+            </div>
 
-          <button type="submit" class="btn-gold-full">
-            <i class="fas fa-paper-plane"></i>
-            &nbsp;Post Trip Offer
-          </button>
-        </form>
-      </section>
-    </div>
+            <div class="form-field">
+              <label>Trip Category</label>
 
-    <!-- MAP -->
-    <div class="map-wrapper glass-card">
-      <div id="map"></div>
+              <select class="dark-select" name="category">
+                <option value="local">Local City Ride</option>
+
+                <option value="outstation">Outstation Journey</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-gold-full">
+              <i class="fas fa-paper-plane"></i>
+              &nbsp;Post Trip Offer
+            </button>
+          </form>
+        </section>
+      </div>
+
+      <!-- MAP -->
+      <div class="map-wrapper glass-card">
+        <div id="map"></div>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  window.mapToken = "<%= mapToken || '' %>";
-</script>
+  <script>
+    window.mapToken = "<%= mapToken || '' %>";
+  </script>
 
-<script src="/js/map.js"></script>
+  <script src="/js/map.js"></script>
 
-<!-- Flatpickr JS -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script>
-  // Initialize Flatpickr on the date input
-  flatpickr("#departureDate", {
-    enableTime: true,
-    dateFormat: "Y-m-d H:i",
-    minDate: "today",
-    time_24hr: true,
-    placeholder: "Select date and time",
-  });
-</script>
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    // Initialize Flatpickr on the date input
+    flatpickr("#departureDate", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      minDate: "today",
+      time_24hr: true,
+      placeholder: "Select date and time",
+    });
+  </script>
