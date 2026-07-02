@@ -91,7 +91,7 @@ cd sync-ride
 ## 👨‍💻 Contributors
 
 Aryan Gupta
-Krish budhia
+Krish Budhia
 
 ---
 
@@ -99,10 +99,3 @@ Krish budhia
 
 This project is created for academic and educational purposes.
 
----
-
-## 📬 Contact
-
-For any queries or suggestions:
-
-Email: aryanq102@gmail.com
